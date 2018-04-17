@@ -4,69 +4,72 @@ import Data.List
 import Data.Maybe
 import Test.Hspec
 
+ejecutarTests = hspec $ do
+ describe "Eventos: Cosas que pasan con una billetera de 10 monedas" $ do
+  it "Depósito 10 monedas, ahora tiene 20 monedas" $ billetera (depósito 10 pepe) `shouldBe` 20
+  it "Extrajo 3 monedas, ahora tiene 7 monedas" $ (billetera (extracción 3 pepe)) `shouldBe` 7
+  it "Extrajo 15 monedas, ahora tiene 0 monedas" $ (billetera (extracción 15 pepe)) `shouldBe` 0
+  it "Tuvo un upgrade, ahora tiene 12 monedas" $ (billetera (upgrade pepe)) `shouldBe` 12
+  it "Cuenta cerrada, no quedaron ni mariposas" $ (billetera (cierreDeCuenta pepe)) `shouldBe` 0
+  it "No hubo cambios, sigue con 10 monedas" $ (billetera (quedaIgual pepe)) `shouldBe` 10
+  it "Depósito 1000 monedas y tuvo un upgrade, ahora tiene 1020" $ ((billetera.upgrade.depósito 1000) pepe) `shouldBe` 1020
+  it "Pepe tiene 10 monedas en su billetera" $ billetera pepe `shouldBe` 10
+  it "Se cierra la cuenta de pepe y queda en 0" $ billetera (cierreDeCuenta pepe) `shouldBe` 0
+  it "A pepe se le depositan 15, se extraen 2 y tiene un upgrade, la billetera deberia ser 27.6" $ billetera ((upgrade.extracción 2.depósito 15) pepe) `shouldBe` 27.6
+ describe "Transacciones" $ do
+  it "Se depósita 10 y aplica la transacción 1 a pepe, su billetera queda en 20" $ billetera ((transacción "Luciano" cierreDeCuenta.depósito 10) pepe) `shouldBe` 20
+  it "Se aplica la transacción 2 a pepe y su billetera queda en 15" $ billetera (transacción "Jose" (depósito 5) pepe) `shouldBe` 15
+  it "Se depósita 30 y aplica la transacción 2 a pepe2, su billetera queda en 55" $ billetera ((transacción "Jose" (depósito 5).depósito 30) pepe2) `shouldBe` 55
+  it "Lucho toco se fue y su billetera quedo en 0" $ billetera (transacción "Luciano" (cierreDeCuenta.upgrade.depósito 15) lucho) `shouldBe` 0
+  it "Pepe es un ahorrante errante y su billetera queda en 34" $ billetera (transacción "Luciano" (depósito 10.upgrade.depósito 8.extracción 1.depósito 2.depósito 1.depósito 8) lucho) `shouldBe` 34
+ describe "Pago entre usuarios" $ do
+  it "Se aplica la transacción 5 a pepe y queda con una billetera de 3" $ billetera (pagoEntreUsuarios "Jose" "Luciano" 7 pepe) `shouldBe` 3
+  it "Se aplica la transacción 5 a lucho y queda con una billetera de 17" $ billetera ((pagoEntreUsuarios "Jose" "Luciano" 7.depósito 8) lucho) `shouldBe` 17
+
 data Usuario = Usuario{
   nombre :: String,
-  billetera :: Float,
-  nivel :: Int
+  billetera :: Float
 } deriving(Show)
 
-rodrigo = Usuario "Rodrigo" 10 0
-pepe = Usuario "José" 10 0
-lucho = Usuario "Luciano" 2 0
+pepe = Usuario "José" 10
+pepe2 = Usuario "José" 20
+lucho = Usuario "Luciano" 2
 
-sumarDinero usuario dinero = (billetera usuario) + dinero
-depósito usuario dineroDepositado = usuario{ billetera = sumarDinero usuario dineroDepositado}
+sumarDinero dinero usuario = (billetera usuario) + dinero
+depósito dineroDepositado usuario = usuario{ billetera = sumarDinero dineroDepositado usuario}
 
-restarDinero usuario dinero = (billetera usuario) - dinero
-extracción usuario dineroExtraido
- |restarDinero usuario dineroExtraido > 0 = usuario{ billetera = restarDinero usuario dineroExtraido}
- |otherwise = usuario{ billetera = 0}
- 
-subirUnNivel usuario = (nivel usuario) + 1
+restarDinero dinero usuario = (billetera usuario) - dinero
+extracción dineroExtraido usuario
+ |restarDinero dineroExtraido usuario > 0 = usuario{ billetera = restarDinero dineroExtraido usuario }
+ |otherwise = usuario{ billetera = 0 }
+
 upgrade usuario
- |billetera usuario <= 50 = usuario{ billetera = (billetera usuario) * 1.20, nivel = subirUnNivel usuario}
- |billetera usuario > 50 = usuario{ billetera = sumarDinero usuario 10, nivel = subirUnNivel usuario}
+ |billetera usuario * 0.2 < 10 = usuario { billetera = billetera usuario * 1.2}
+ |otherwise = usuario { billetera = sumarDinero 10 usuario}
 
-cierreDeCuenta usuario = usuario{ billetera = 0}
+cierreDeCuenta usuario = usuario{ billetera = 0 }
 
 quedaIgual usuario = usuario
 
-luchoCierraCuenta usuario
-  |nombre usuario == "Luciano" = cierreDeCuenta usuario
-  |nombre usuario != "Luciano" = quedaIgual usuario
+--Transacciones
+transacción unNombre tipoTransacción usuario
+ |nombre usuario == unNombre = tipoTransacción usuario
+ |otherwise = quedaIgual usuario
 
-  pepeDeposita usuario monedas
-  |nombre usuario == "José" = depósito usuario monedas
-  |nombre usuario != "José" = quedaIgual usuario
 
-  
-tocoYMeVoy usuario = cierreDeCuenta.upgrade.(depósito usuario 15)
-ahorranteErrante usuario = (depósito (upgrade.depósito (extracción (depósito (depósito usuario 1) 2) 1) 8) 10)
+--Pago entre usuarios
+pagoEntreUsuarios deudor acreedor dineroAduedado usuario
+ |nombre usuario == deudor = extracción dineroAduedado usuario
+ |nombre usuario == acreedor = depósito dineroAduedado usuario
+ |otherwise = quedaIgual usuario
 
-luchoTocaYSeVa usuario
- |nombre usuario == "Luciano" = tocoYMeVoy usuario
- |nombre usuario != "Luciano" = quedaIgual usuario
+{-
+Transacciones
 
-luchoEsUnAhorranteErrante usuario
- |nombre usuario == "Luciano" = ahorranteErrante usuario
- |nombre usuario != "Luciano" = quedaIgual usuario
+1 = transacción "Luciano" cierreDeCuenta lucho
+2 = transacción "Jose" (depósito 5) pepe
+3 = tocoYMeVoy = (cierreDeCuenta.upgrade.depósito 15) lucho
+4 = ahorranteErrante = (depósito 10.upgrade.depósito 8.extracción 1.depósito 2.depósito 1) lucho
+5 = pepe le da 7 monedas a lucho
 
-ejecutarTests = hspec $ do
- describe "Eventos: Cosas que pasan con una billetera de 10 monedas" $ do
-  it "Depósito 10 monedas, ahora tiene 20 monedas" $ (billetera (depósito rodrigo 10)) `shouldBe` 20
-  it "Extrajo 3 monedas, ahora tiene 7 monedas" $ (billetera (extracción rodrigo 3)) `shouldBe` 7
-  it "Extrajo 15 monedas, ahora tiene 0 monedas" $ (billetera (extracción rodrigo 15)) `shouldBe` 0
-  it "Tuvo un upgrade, ahora tiene 12 monedas" $ (billetera (upgrade rodrigo)) `shouldBe` 12
-  it "Cuenta cerrada, no quedaron ni mariposas" $ (billetera (cierreDeCuenta rodrigo)) `shouldBe` 0
-  it "No hubo cambios, sigue con 10 monedas" $ (billetera (quedaIgual rodrigo)) `shouldBe` 10
-  it "Depósito 1000 monedas y tuvo un upgrade, ahora tiene 1020" $ ((billetera.upgrade.depósito rodrigo) 1000) `shouldBe` 1020
- describe "Usuarios: Casos con Pepe y Lucho" $ do 
-  it "Pepe tiene 10 monedas" $ (billetera pepe) `shouldBe` 10
-  it "A pepe le cierran la cuenta entonces queda con 0 monedas" $ (billetera (cierreDeCuenta pepe)) `shouldBe` 0
-  it "A pepe le depositan 15 monedas, extrae 2 y recibe un upgrade, y le termina quedando 27.6 monedas" $ ((billetera.upgrade.extracción (depósito pepe 15)) 2) `shouldBe` 27.6
-  it "Aplicar luchoCierraCuenta a pepe" $ (billetera(luchoCierraCuenta pepe) `shouldBe` 20
- describe "Transacciones: Casos con Pepe y Lucho" $ do
-  it "pepe deposita 5 monedas en una billetera de 10, queda con 15" $ (billetera(pepeDeposita pepe 5)) `shouldBe` 15
-  it "pepe2 deposita 5 monedas en una billetera de 20, queda con 25" $ (billetera(pepeDeposita pepe2 5)) `shouldBe` 25
-  it "Lucho toca y se va" $ (billetera(luchoTocaYSeVa Lucho)) `shouldBe` 0
-  it "Lucho es un ahorrante errante" $ (billetera(luchoEsUnAhorranteErrante Lucho)) `shouldBe` 34
+-}
