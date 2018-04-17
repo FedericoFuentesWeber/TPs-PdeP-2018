@@ -31,6 +31,26 @@ cierreDeCuenta usuario = usuario{ billetera = 0}
 
 quedaIgual usuario = usuario
 
+luchoCierraCuenta usuario
+  |nombre usuario == "Luciano" = cierreDeCuenta usuario
+  |nombre usuario != "Luciano" = quedaIgual usuario
+
+  pepeDeposita usuario monedas
+  |nombre usuario == "José" = depósito usuario monedas
+  |nombre usuario != "José" = quedaIgual usuario
+
+  
+tocoYMeVoy usuario = cierreDeCuenta.upgrade.(depósito usuario 15)
+ahorranteErrante usuario = (depósito (upgrade.depósito (extracción (depósito (depósito usuario 1) 2) 1) 8) 10)
+
+luchoTocaYSeVa usuario
+ |nombre usuario == "Luciano" = tocoYMeVoy usuario
+ |nombre usuario != "Luciano" = quedaIgual usuario
+
+luchoEsUnAhorranteErrante usuario
+ |nombre usuario == "Luciano" = ahorranteErrante usuario
+ |nombre usuario != "Luciano" = quedaIgual usuario
+
 ejecutarTests = hspec $ do
  describe "Eventos: Cosas que pasan con una billetera de 10 monedas" $ do
   it "Depósito 10 monedas, ahora tiene 20 monedas" $ (billetera (depósito rodrigo 10)) `shouldBe` 20
@@ -44,3 +64,9 @@ ejecutarTests = hspec $ do
   it "Pepe tiene 10 monedas" $ (billetera pepe) `shouldBe` 10
   it "A pepe le cierran la cuenta entonces queda con 0 monedas" $ (billetera (cierreDeCuenta pepe)) `shouldBe` 0
   it "A pepe le depositan 15 monedas, extrae 2 y recibe un upgrade, y le termina quedando 27.6 monedas" $ ((billetera.upgrade.extracción (depósito pepe 15)) 2) `shouldBe` 27.6
+  it "Aplicar luchoCierraCuenta a pepe" $ (billetera(luchoCierraCuenta pepe) `shouldBe` 20
+ describe "Transacciones: Casos con Pepe y Lucho" $ do
+  it "pepe deposita 5 monedas en una billetera de 10, queda con 15" $ (billetera(pepeDeposita pepe 5)) `shouldBe` 15
+  it "pepe2 deposita 5 monedas en una billetera de 20, queda con 25" $ (billetera(pepeDeposita pepe2 5)) `shouldBe` 25
+  it "Lucho toca y se va" $ (billetera(luchoTocaYSeVa Lucho)) `shouldBe` 0
+  it "Lucho es un ahorrante errante" $ (billetera(luchoEsUnAhorranteErrante Lucho)) `shouldBe` 34
