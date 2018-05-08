@@ -31,20 +31,26 @@ ejecutarTests = hspec $ do
   it "Se aplica la transacción 5 y luego la 2 a lucho y muestra que queda con 8 monedas" $ (aplicarTransacciónAUsuario transacción2.aplicarTransacciónAUsuario transacción5) pepe `shouldBe` Usuario {nombre = "José", billetera = 8}
  describe "Test con bloques" $ do
   it "Se aplica el bloque 1 a pepe y su billetera queda en 18" $ foldl (flip aplicarTransacciónAUsuario) pepe bloque1 `shouldBe` Usuario {nombre = "José", billetera = 18}
-  it "Se aplica el bloque 1 a pepe y lucho, pepe es el unico con crédito mayor a 10" $ head (filtroUsuarios 10 bloque1 conjuntoUsuarios) `shouldBe` Usuario {nombre = "José", billetera = 18}
-  it "Se aplica el bloque 1 a pepe y lucho, pepe es el mas adinerado" $ (plataSegun (>=). mapBloque bloque1 $ conjuntoUsuarios) `shouldBe` Usuario {nombre = "José", billetera = 18}
-  it "Se aplica el bloque 1 a pepe y lucho, lucho es el menos adinerado" $ (plataSegun (<=). mapBloque bloque1 $ conjuntoUsuarios) `shouldBe` Usuario {nombre = "Luciano", billetera = 0}
+  it "Se aplica el bloque 1 a pepe y lucho, pepe es el unico con crédito mayor a 10" $ aplicarTransacciónAUsuario transacción6 (head (filtroUsuarios 10 bloque1 conjuntoUsuarios)) `shouldBe` Usuario {nombre = "José", billetera = 10}
+  it "Se aplica el bloque 1 a pepe y lucho, pepe es el mas adinerado" $ aplicarTransacciónAUsuario transacción6 (plataSegun (>=). mapBloque bloque1 $ conjuntoUsuarios) `shouldBe` Usuario {nombre = "José", billetera = 10}
+  it "Se aplica el bloque 1 a pepe y lucho, lucho es el menos adinerado" $ aplicarTransacciónAUsuario transacción7 (plataSegun (<=). mapBloque bloque1 $ conjuntoUsuarios) `shouldBe` Usuario {nombre = "Luciano", billetera = 2}
+ describe "Test con block chains" $ do
+ it "Se aplica el block chain a pepe y se muestra que el bloque 1 es el que peor lo deja con 18 monedas" $ aplicarUsuarioBloque pepe (peorBloque pepe blockChain) `shouldBe` Usuario {nombre = "José", billetera = 18}
+ it "Se aplica el block chain a pepe y este queda con 115 monedas" $ aplicarUsuarioBlockChain pepe blockChain `shouldBe` Usuario {nombre = "José", billetera = 115}
+ it "Aplicando los primeros 3 bloques del block chain pepe queda con 51 monedas" $ billeteraEnPosicionN 3 pepe blockChain `shouldBe` Usuario {nombre = "José", billetera = 51}
+ it "Se aplica el block chain a un conjunto de usuarios y la sumatoria de billeteras da 115" $ sum ( map billetera ( mapBlockChain blockChain conjuntoUsuarios )) `shouldBe` 115
+ it "Se aplica el block chain infinito y a los 11 bloques pepe queda con 10000 monedas" $ (aplicarUsuarioBlockChain pepe. take 11) (blockChainInfinita bloque1) `shouldBe` Usuario {nombre = "José", billetera = 16386}
 
 data Usuario = Usuario{
   nombre :: String,
   billetera :: Float
-} deriving(Show)
+} deriving(Show, Eq)
 
 type Billetera = Float
 type Evento = Billetera -> Billetera
 type Transacción = Usuario -> Evento -> Usuario -> Evento
 type Bloque = [Usuario -> Evento]
-type Blockchain = [[Usuario -> Evento]]
+type BlockChain = [[Usuario -> Evento]]
 
 pepe = Usuario "José" 10
 pepe2 = Usuario "José" 20
@@ -86,6 +92,8 @@ transacción2 = transacción pepe (depósito 5)
 transacción3 = transacción lucho tocoYMeVoy
 transacción4 = transacción lucho ahorranteErrante
 transacción5 = pagoEntreUsuarios pepe 7 lucho
+transacción6 = transacción pepe (extracción 8)
+transacción7 = transacción lucho (depósito 2)
 
 --Parte 2
 
@@ -108,3 +116,20 @@ plataSegun funcion (x:xs)
 
 bloque2 = [transacción2,transacción2,transacción2,transacción2,transacción2]
 blockChain = [bloque2, bloque1, bloque1, bloque1, bloque1, bloque1, bloque1, bloque1, bloque1, bloque1, bloque1]
+
+aplicarUsuarioBlockChain :: Usuario -> BlockChain -> Usuario
+aplicarUsuarioBlockChain = foldl aplicarUsuarioBloque
+
+peorBloque usuario (bloqueCabeza:bloqueCola)
+ |(billetera.aplicarUsuarioBloque usuario) bloqueCabeza <= (billetera. aplicarUsuarioBloque usuario) (head bloqueCola) = bloqueCabeza
+ |otherwise = peorBloque usuario bloqueCola
+
+billeteraEnPosicionN :: Int -> Usuario -> BlockChain -> Usuario
+billeteraEnPosicionN n usuario cadenaBloque
+ |n < length cadenaBloque = (aplicarUsuarioBlockChain usuario.take n) cadenaBloque
+ |otherwise = aplicarUsuarioBlockChain usuario cadenaBloque
+
+mapBlockChain cadenaBloque = map (flip aplicarUsuarioBlockChain cadenaBloque)
+
+duplicarBloque bloque = (concat.replicate 2)bloque
+blockChainInfinita bloque = iterate duplicarBloque bloque
