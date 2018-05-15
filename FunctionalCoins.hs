@@ -120,6 +120,8 @@ blockChain = [bloque2, bloque1, bloque1, bloque1, bloque1, bloque1, bloque1, blo
 aplicarUsuarioBlockChain :: Usuario -> BlockChain -> Usuario
 aplicarUsuarioBlockChain = foldl aplicarUsuarioBloque
 
+peorBloque usuario [] = []
+peorBloque usuario (bloqueCabeza:[]) = bloqueCabeza
 peorBloque usuario (bloqueCabeza:bloqueCola)
  |(billetera.aplicarUsuarioBloque usuario) bloqueCabeza <= (billetera. aplicarUsuarioBloque usuario) (head bloqueCola) = bloqueCabeza
  |otherwise = peorBloque usuario bloqueCola
