@@ -51,6 +51,7 @@ type Evento = Billetera -> Billetera
 type Transacción = Usuario -> Evento -> Usuario -> Evento
 type Bloque = [Usuario -> Evento]
 type BlockChain = [[Usuario -> Evento]]
+type ConjuntoDeUsuarios = [Usuario]
 
 pepe = Usuario "José" 10
 pepe2 = Usuario "José" 20
@@ -97,12 +98,15 @@ transacción7 = transacción lucho (depósito 2)
 
 --Parte 2
 
+--aplicarTransacciónAUsuario :: Transacción -> Usuario -> Usuario
 aplicarTransacciónAUsuario transacción usuario = usuario {billetera = transacción usuario (billetera usuario)}
 
 bloque1 = [transacción1, transacción2, transacción2, transacción2, transacción3, transacción4, transacción5, transacción3]
 conjuntoUsuarios = [pepe, lucho]
 
+aplicarUsuarioBloque :: Usuario -> Bloque -> Usuario
 aplicarUsuarioBloque = foldl (flip aplicarTransacciónAUsuario)
+
 mapBloque bloque = map (flip aplicarUsuarioBloque bloque)
 
 filtroUsuarios n bloque = filter ((>=n).billetera).mapBloque bloque
@@ -120,6 +124,7 @@ blockChain = [bloque2, bloque1, bloque1, bloque1, bloque1, bloque1, bloque1, blo
 aplicarUsuarioBlockChain :: Usuario -> BlockChain -> Usuario
 aplicarUsuarioBlockChain = foldl aplicarUsuarioBloque
 
+peorBloque :: Usuario -> BlockChain -> Bloque
 peorBloque usuario [] = []
 peorBloque usuario (bloqueCabeza:[]) = bloqueCabeza
 peorBloque usuario (bloqueCabeza:bloqueCola)
@@ -131,7 +136,11 @@ billeteraEnPosicionN n usuario cadenaBloque
  |n < length cadenaBloque = (aplicarUsuarioBlockChain usuario.take n) cadenaBloque
  |otherwise = aplicarUsuarioBlockChain usuario cadenaBloque
 
+mapBlockChain :: BlockChain -> ConjuntoDeUsuarios -> ConjuntoDeUsuarios
 mapBlockChain cadenaBloque = map (flip aplicarUsuarioBlockChain cadenaBloque)
 
+duplicarBloque :: Bloque -> Bloque
 duplicarBloque bloque = (concat.replicate 2)bloque
+
+blockChainInfinita :: Bloque -> BlockChain
 blockChainInfinita bloque = iterate duplicarBloque bloque
