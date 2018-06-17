@@ -87,3 +87,24 @@ leSpoileo(PersonaQueSpoilea, Victima, Serie) :-
 televidenteResponsable(BuenTelevidente) :-
  miraOQuiereMirar(BuenTelevidente, _),
  not(leSpoileo(BuenTelevidente,_,_)).
+
+pasoAlgoFuerte(Serie):-
+ paso(Serie,_,muerte(_)).
+
+pasoAlgoFuerte(Serie):-
+ paso(Serie,_,relacion(amorosa,_,_)).
+
+pasoAlgoFuerte(Serie):-
+ paso(Serie,_,relacion(parentesco,_,_)).
+
+
+vieneZafando(Persona,Serie):-
+ miraOQuiereMirar(Persona,Serie),
+ not(leSpoileo(_,Persona,Serie)),
+ pasoAlgoFuerte(Serie).
+
+
+vieneZafando(Persona,serie):-
+ miraOQuiereMirar(Persona,Serie),
+ not(leSpoileo(_,Persona,Serie)),
+ esPopular(Serie).
