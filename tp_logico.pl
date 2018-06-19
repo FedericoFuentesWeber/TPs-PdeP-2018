@@ -1,3 +1,28 @@
+:- begin_tests(que_series_miran).
+	test(juan_mira_GameOfThrones, nondet) :- quienMira(juan,got).
+	test(nico_mira_starWars, nondet) :- quienMira(nico,starWars).
+:- end_tests(que_series_miran).
+
+:- begin_tests(que_series_planean_ver).
+	test(juan_quiere_ver_HouseOfCards, nondet) :- quiereMirar(juan,hoc).
+	test(aye_quiere_ver_GameOfThrones, nondet) :- quiereMirar(aye,got).
+:- end_tests(que_series_planean_ver).
+
+:- begin_tests(episodios_y_temporadas_de_las_series).
+	test(la_temporada_3_de_GameOfThrones_tiene_12_episodios, nondet) :- cantidadDeEpisodios(got,3,12).
+	test(la_temporada_8_de_DrHouse_tiene_16_episodios, nondet) :- cantidadDeEpisodios(drHouse,8,16).
+:- end_tests(episodios_y_temporadas_de_las_series).
+
+:- begin_tests(que_cosas_pasaron_en_las_series).
+	test(en_el_episodio_3_de_la_temporada_2_de_futurama_murio_seymourDiera, nondet) :- paso(futurama, 2, 3, muerte(seymourDiera)).
+	test(en_el_episodio_2_de_la_temporada_1_de_starWars_se_dio_una_relacion_de_parentesco_entre_anakin_y_rey, nondet) :- paso(starWars, 1, 2, relacion(parentesco, anakin, rey)).
+:- end_tests(que_cosas_pasaron_en_las_series).
+
+:- begin_tests(que_cosas_le_dijo_una_persona_a_otra_acerca_de_una_serie).
+	test(nico_le_dijo_a_juan_la_muerte_de_tyrion_en_GameOfThrones, nondet) :-leDijo(nico, juan, got, muerte(tyrion)).
+	test(aye_le_dijo_a_maiu_la_relacion_de_amistad_entre_tyrion_y_john_en_GameOfThrones, nondet) :- leDijo(aye, maiu, got, relacion(amistad, tyrion, john)).
+:- end_tests(que_cosas_le_dijo_una_persona_a_otra_acerca_de_una_serie).
+
 :- begin_tests(hechos_spoilers).
 
 	test(la_muerte_de_emperor_es_spoiler_para_starWars, nondet) :- esSpoiler(starWars,muerte(emperor)).
@@ -24,7 +49,7 @@
 :- begin_tests(vienen_zafando).
 
 	test(maiu_no_viene_zafando_de_ninguna_serie, fail) :- vieneZafando(maiu, _).
-	test(juan_viene_zafando_con_himym_got_y_hoc, set(Serie == [himym,got,futurama,hoc])) :- vieneZafando(juan,Serie).
+	test(juan_viene_zafando_con_himym_got_y_hoc, set(Serie == [himym,got,hoc])) :- vieneZafando(juan,Serie).
 	test(nico_viene_zafando_con_starWars, set(Persona == [nico])) :- vieneZafando(Persona,starWars).
 
 :- end_tests(vienen_zafando).
@@ -93,18 +118,18 @@ televidenteResponsable(BuenTelevidente) :-
  miraOQuiereMirar(BuenTelevidente, _),
  not(leSpoileo(BuenTelevidente,_,_)).
 
-pasoAlgoFuerte(Serie):-
- paso(Serie,_,_,muerte(_)).
-pasoAlgoFuerte(Serie):-
- paso(Serie,_,_,relacion(amorosa,_,_)).
-pasoAlgoFuerte(Serie):-
- paso(Serie,_,_,relacion(parentesco,_,_)).
-
+pasoAlgoFuerteEnTemporada(Serie,Temporada):-
+ paso(Serie,Temporada,_,muerte(_)).
+pasoAlgoFuerteEnTemporada(Serie, Temporada):-
+ paso(Serie,Temporada,_,relacion(amorosa,_,_)).
+pasoAlgoFuerteEnTemporada(Serie, Temporada):-
+ paso(Serie,Temporada,_,relacion(parentesco,_,_)).
 
 vieneZafando(Persona,Serie):-
  miraOQuiereMirar(Persona,Serie),
  not(leSpoileo(_,Persona,Serie)),
- pasoAlgoFuerte(Serie).
+ cantidadDeEpisodios(Serie,Temporada,_),
+ forall(cantidadDeEpisodios(Serie,Temporada,_), pasoAlgoFuerteEnTemporada(Serie, Temporada)).
 
 vieneZafando(Persona,Serie):-
  miraOQuiereMirar(Persona,Serie),
