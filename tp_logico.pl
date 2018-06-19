@@ -17,12 +17,17 @@
 :- begin_tests(televidentes_responsables).
 
 	test(televidentes_que_son_responsables, set(TelevidentesResponsables == [juan,maiu,aye])) :- televidenteResponsable(TelevidentesResponsables).
-	%test(gaston_no_es_un_televidente_responsable, fail) :- televidenteResponsable(gaston).
-	%test(nico_no_es_un_televidente_responsable, fail) :- televidenteResponsable(nico).
-	%test(aye_no_es_una_televidente_responsable, fail) :- televidenteResponsable(aye).
-	test(televidentes_que_son_responsables, set(TelevidentesResponsables == [gaston,nico]), fail) :- televidenteResponsable(TelevidentesResponsables).
+	test(televidentes_que_no_son_responsables, set(TelevidentesResponsables == [gaston,nico]), fail) :- televidenteResponsable(TelevidentesResponsables).
 
 :- end_tests(televidentes_responsables).
+
+:- begin_tests(vienen_zafando).
+
+	test(maiu_no_viene_zafando_de_ninguna_serie, fail) :- vieneZafando(maiu, _).
+	test(juan_viene_zafando_con_himym_got_y_hoc, set(Serie == [himym,got,futurama,hoc])) :- vieneZafando(juan,Serie).
+	test(nico_viene_zafando_con_starWars, set(Persona == [nico])) :- vieneZafando(Persona,starWars).
+
+:- end_tests(vienen_zafando).
 
 quienMira(juan,himym).
 quienMira(juan,futurama).
@@ -89,13 +94,11 @@ televidenteResponsable(BuenTelevidente) :-
  not(leSpoileo(BuenTelevidente,_,_)).
 
 pasoAlgoFuerte(Serie):-
- paso(Serie,_,muerte(_)).
-
+ paso(Serie,_,_,muerte(_)).
 pasoAlgoFuerte(Serie):-
- paso(Serie,_,relacion(amorosa,_,_)).
-
+ paso(Serie,_,_,relacion(amorosa,_,_)).
 pasoAlgoFuerte(Serie):-
- paso(Serie,_,relacion(parentesco,_,_)).
+ paso(Serie,_,_,relacion(parentesco,_,_)).
 
 
 vieneZafando(Persona,Serie):-
@@ -103,8 +106,7 @@ vieneZafando(Persona,Serie):-
  not(leSpoileo(_,Persona,Serie)),
  pasoAlgoFuerte(Serie).
 
-
-vieneZafando(Persona,serie):-
+vieneZafando(Persona,Serie):-
  miraOQuiereMirar(Persona,Serie),
  not(leSpoileo(_,Persona,Serie)),
  esPopular(Serie).
