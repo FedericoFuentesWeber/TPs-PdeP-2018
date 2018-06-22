@@ -128,10 +128,20 @@ pasoAlgoFuerteEnTemporada(Serie, Temporada):-
 vieneZafando(Persona,Serie):-
  miraOQuiereMirar(Persona,Serie),
  not(leSpoileo(_,Persona,Serie)),
- cantidadDeEpisodios(Serie,Temporada,_),
+ cantidadDeEpisodios(Serie,_,_),
  forall(cantidadDeEpisodios(Serie,Temporada,_), pasoAlgoFuerteEnTemporada(Serie, Temporada)).
 
 vieneZafando(Persona,Serie):-
  miraOQuiereMirar(Persona,Serie),
  not(leSpoileo(_,Persona,Serie)),
  esPopular(Serie).
+
+malaGente(Persona) :-
+miraOQuiereMirar(Persona, _),
+leSpoileo(Persona, _, Serie),
+not(quienMira(Persona, Serie)).
+
+malaGente(Persona) :-
+miraOQuiereMirar(Persona, _),
+leDijo(Persona, _, _, _),
+forall(leDijo(Persona, Victima, _, _), leSpoileo(Persona, Victima, _)).
