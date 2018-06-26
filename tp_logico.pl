@@ -145,3 +145,19 @@ malaGente(Persona) :-
 miraOQuiereMirar(Persona, _),
 leDijo(Persona, _, _, _),
 forall(leDijo(Persona, Victima, _, _), leSpoileo(Persona, Victima, _)).
+
+amigo(nico, maiu).
+amigo(maiu, gaston).
+amigo(maiu, juan).
+amigo(juan, aye).
+
+
+fullSpoil(PersonaQueSpoilea, Victima) :- 
+leSpoileo(PersonaQueSpoilea, Victima, _).
+
+fullSpoil(PersonaQueSpoilea, AmigoDeLaVictima) :-
+miraOQuiereMirar(PersonaQueSpoilea, _),
+amigo(Victima, AmigoDeLaVictima),
+not(leSpoileo(PersonaQueSpoilea, AmigoDeLaVictima, _)),
+PersonaQueSpoilea \= AmigoDeLaVictima,
+fullSpoil(PersonaQueSpoilea, Victima).
