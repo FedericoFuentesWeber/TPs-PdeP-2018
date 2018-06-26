@@ -146,13 +146,31 @@ miraOQuiereMirar(Persona, _),
 leDijo(Persona, _, _, _),
 forall(leDijo(Persona, Victima, _, _), leSpoileo(Persona, Victima, _)).
 
+cantidadTotalQueMira(Serie, TotalQueMira) :-
+ findall(Persona, quienMira(Persona, Serie), Personas),
+ length(Personas, TotalQueMira).
+
+cantidadTotalQueHablaSobre(Serie, TotalQueHabloSobre) :-
+ findall(Persona, leDijo(Persona, _, Serie, _), Personas),
+ length(Personas, TotalQueHabloSobre).
+
+popularidad(Serie, Popularidad) :-
+ cantidadTotalQueMira(Serie, TotalQueMira),
+ cantidadTotalQueHablaSobre(Serie, TotalQueHabloSobre),
+ Popularidad is TotalQueMira * TotalQueHabloSobre.
+
+popular(Serie) :-
+ popularidad(Serie, PopularidadSerie),
+ popularidad(starWars, PopularidadStarWars),
+ PopularidadSerie >= PopularidadStarWars.
+
 amigo(nico, maiu).
 amigo(maiu, gaston).
 amigo(maiu, juan).
 amigo(juan, aye).
 
 
-fullSpoil(PersonaQueSpoilea, Victima) :- 
+fullSpoil(PersonaQueSpoilea, Victima) :-
 leSpoileo(PersonaQueSpoilea, Victima, _).
 
 fullSpoil(PersonaQueSpoilea, AmigoDeLaVictima) :-
