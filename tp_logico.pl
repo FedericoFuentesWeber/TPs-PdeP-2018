@@ -179,3 +179,12 @@ amigo(Victima, AmigoDeLaVictima),
 not(leSpoileo(PersonaQueSpoilea, AmigoDeLaVictima, _)),
 PersonaQueSpoilea \= AmigoDeLaVictima,
 fullSpoil(PersonaQueSpoilea, Victima).
+
+plotTwist(got,3,2,[suenio,sinpiernas]).
+plotTwist(got,3,12,[fuego,boda]).
+plotTwist(supercampeones,9,9,[suenio,coma,sinpiernas]).
+plotTwist(drHouse,8,7,[coma,pastillas]).
+
+escliche(plotTwist(_,_,_,Laspalabras)):-
+ member(Unapalabra,Laspalabras),
+ forall(plotTwist(_,_,_,Otraspalabras),member(Unapalabra,Otraspalabras)).
