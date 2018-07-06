@@ -118,7 +118,7 @@ televidenteResponsable(BuenTelevidente) :-
  miraOQuiereMirar(BuenTelevidente, _),
  not(leSpoileo(BuenTelevidente,_,_)).
 
-pasoAlgoFuerteEnTemporada(Serie,Temporada):-
+pasoAlgoFuerte(Serie,Temporada):-
  paso(Serie,Temporada,_,muerte(_)).
 pasoAlgoFuerteEnTemporada(Serie, Temporada):-
  paso(Serie,Temporada,_,relacion(amorosa,_,_)).
@@ -185,6 +185,11 @@ plotTwist(got,3,12,[fuego,boda]).
 plotTwist(supercampeones,9,9,[suenio,coma,sinpiernas]).
 plotTwist(drHouse,8,7,[coma,pastillas]).
 
-escliche(plotTwist(_,_,_,Laspalabras)):-
- member(Unapalabra,Laspalabras),
- forall(plotTwist(_,_,_,Otraspalabras),member(Unapalabra,Otraspalabras)).
+escliche(plotTwist(Serie,_,_,Laspalabras)):-
+ plotTwist(OtraSerie,_,_,Otraspalabras),
+ Serie \= OtraSerie,
+ forall(member(Palabra,Laspalabras),member(Palabra,Otraspalabras)).
+
+pasoAlgoFuerte(plotTwist(Serie,Temporada,Capitulo,Laspalabras)):-
+  cantidadDeEpisodios(Serie,Temporada,Capitulo),
+  not(escliche(plotTwist(Serie,Temporada,Capitulo,Laspalabras))).
