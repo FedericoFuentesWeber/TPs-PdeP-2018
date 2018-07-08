@@ -190,6 +190,13 @@ escliche(plotTwist(Serie,_,_,Laspalabras)):-
  Serie \= OtraSerie,
  forall(member(Palabra,Laspalabras),member(Palabra,Otraspalabras)).
 
-pasoAlgoFuerte(plotTwist(Serie,Temporada,Capitulo,Laspalabras)):-
+esFuerte(plotTwist(Serie,Temporada,Capitulo,Laspalabras)):-
   cantidadDeEpisodios(Serie,Temporada,Capitulo),
   not(escliche(plotTwist(Serie,Temporada,Capitulo,Laspalabras))).
+
+	pasoAlgoFuerte(Serie):-
+	 paso(Serie,_,_,muerte(_)).
+	pasoAlgoFuerteEnTemporada(Serie):-
+	 paso(Serie,_,_,relacion(amorosa,_,_)).
+	pasoAlgoFuerteEnTemporada(Serie):-
+	 paso(Serie,_,_,relacion(parentesco,_,_)).
