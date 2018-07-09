@@ -55,10 +55,29 @@
 :- end_tests(vienen_zafando).
 
 :- begin_tests(segunda_entrega).
-  	test(gaston_es_mala_gente, nondet) :- malaGente(gaston).
-	test(el_plotTwist_que_contiene_las_palabras_fuegoYBoda_en_GOT_es_fuerte, nondet) :- pasoAlgoFuerte(plotTwist(got,3,12,[fuego,boda])).
-	test(got_es_popular, nondet) :- popular(got).
-	test(nico_hizo_fullSpoil, set(Personas == [aye,juan,maiu,gaston])) :- fullSpoil(nico,Personas).
+
+	% Punto A - malaGente
+	test(malaGente, set(Malos = [nico, gaston])):- malaGente(Malos).
+    test(buenaGente, set(Buenos = [aye, maiu, pedro, juan]), fail):- malaGente(Buenos).
+
+	% Punto B - esUnSucesoFuerte
+ 	test(la_muerte_de_seymourDiera_en_Futurama_es_algo_fuerte, nondet):- esUnSucesoFuerte(futurama, muerte(seymourDiera)).
+    test(la_muerte_de_emperor_es_algo_fuerte, nondet):- esUnSucesoFuerte(starWars, muerte(emperor)).
+    test(la_relacion_de_parentesco_de_anakin_y_el_rey_en_starWars_es_algo_fuerte, nondet):- esUnSucesoFuerte(starWars, relacion(parentesco, anakin, rey)).
+    test(la_relacion_de_parentesco_de_darthVader_y_luke_es_algo_fuerte, nondet):- esUnSucesoFuerte(starWars, relacion(parentesco, vader, luke)).
+    test(la_relacion_amorosa_de_ted_y_robin_en_hymym_es_algo_fuerte, nondet):- esUnSucesoFuerte(himym, relacion(amorosa, ted, robin)).
+    test(la_relacion_amorosa_de_swarley_y_robin_en_himym_es_algo_fuerte, nondet):- esUnSucesoFuerte(himym, relacion(amorosa, swarley, robin)).
+    test(el_plotTwist_que_contiene_las_palabras_fuegoYBoda_en_got_es_fuerte, nondet):- esUnSucesoFuerte(got, plotTwist([fuego, boda])).
+    test(el_plotTwist_que_contiene_la_palabra_suenio_en_got_no_es_algo_fuerte, nondet):- not(esUnSucesoFuerte(got, plotTwist([suenio]))).
+    test(el_plotTwist_que_contiene_las_palabras_coma_y_pastillas_en_drHouse_no_es_algo_fuerte, nondet):- not(esUnSucesoFuerte(drHouse, plotTwist([coma, pastillas]))).
+        
+    % Punto C - popularidad
+    test(popularidad_series_populares, set(Populares = [got, starWars, hoc])):- popular(Populares).
+    
+    % Punto D - fullSpoil
+    test(a_Quienes_hace_fullSpoil_nico, set(Quienes = [gaston, aye, juan, maiu])):- fullSpoil(nico, Quienes).
+    test(a_Quienes_hace_fullSpoil_gaston, set(Quienes = [aye, juan, maiu])):-fullSpoil(gaston, Quienes).
+    test(maiu_no_le_hace_fullSpoil_a_nadie, fail):- fullSpoil(maiu, _).
 
 :- end_tests(segunda_entrega).
 
@@ -100,6 +119,11 @@ paso(himym, 1, 1, relacion(amorosa, ted, robin)).
 paso(himym, 4, 3, relacion(amorosa, swarley, robin)).
 paso(got, 4, 5, relacion(amistad, tyrion, dragon)).
 
+paso(got, 3, 2, plotTwist([suenio,sinpiernas])).
+paso(got, 3, 12, plotTwist([fuego,boda])).
+paso(supercampeones, 9, 9, plotTwist([suenio,coma,sinpiernas])).
+paso(drHouse,8,7,plotTwist([coma,pastillas])).
+
 leDijo(gaston, maiu, got, relacion(amistad, tyrion, dragon)).
 leDijo(nico, maiu, starWars, relacion(parentesco, vader, luke)).
 leDijo(nico, juan, got, muerte(tyrion)).
@@ -132,12 +156,9 @@ televidenteResponsable(BuenTelevidente) :-
  miraOQuiereMirar(BuenTelevidente, _),
  not(leSpoileo(BuenTelevidente,_,_)).
 
-pasoAlgoFuerte(Serie,Temporada):-
- paso(Serie,Temporada,_,muerte(_)).
-pasoAlgoFuerteEnTemporada(Serie, Temporada):-
- paso(Serie,Temporada,_,relacion(amorosa,_,_)).
-pasoAlgoFuerteEnTemporada(Serie, Temporada):-
- paso(Serie,Temporada,_,relacion(parentesco,_,_)).
+ pasoAlgoFuerteEnTemporada(Serie,Temporada):-
+ esUnSucesoFuerte(Serie, Suceso),
+ paso(Serie,Temporada,_,Suceso).
 
 vieneZafando(Persona,Serie):-
  miraOQuiereMirar(Persona,Serie),
@@ -150,6 +171,8 @@ vieneZafando(Persona,Serie):-
  not(leSpoileo(_,Persona,Serie)),
  esPopular(Serie).
 
+%2da entrega
+
 malaGente(Persona) :-
 miraOQuiereMirar(Persona, _),
 leSpoileo(Persona, _, Serie),
@@ -159,6 +182,8 @@ malaGente(Persona) :-
 miraOQuiereMirar(Persona, _),
 leDijo(Persona, _, _, _),
 forall(leDijo(Persona, Victima, _, _), leSpoileo(Persona, Victima, _)).
+
+
 
 cantidadTotalQueMira(Serie, TotalQueMira) :-
  findall(Persona, quienMira(Persona, Serie), Personas),
@@ -197,23 +222,26 @@ not(leSpoileo(PersonaQueSpoilea, AmigoDeLaVictima, _)),
 PersonaQueSpoilea \= AmigoDeLaVictima,
 fullSpoil(PersonaQueSpoilea, Victima).
 
-plotTwist(got,3,2,[suenio,sinpiernas]).
-plotTwist(got,3,12,[fuego,boda]).
-plotTwist(supercampeones,9,9,[suenio,coma,sinpiernas]).
-plotTwist(drHouse,8,7,[coma,pastillas]).
 
-escliche(plotTwist(Serie,_,_,Laspalabras)):-
- plotTwist(OtraSerie,_,_,Otraspalabras),
+
+escliche(plotTwist(Laspalabras)):-
+ paso(Serie,_,_,plotTwist(Laspalabras)),
+ paso(OtraSerie,_,_,plotTwist(Otraspalabras)),
  Serie \= OtraSerie,
  forall(member(Palabra,Laspalabras),member(Palabra,Otraspalabras)).
 
-pasoAlgoFuerte(plotTwist(Serie,Temporada,Capitulo,Laspalabras)):-
+esUnSucesoFuerte(Serie, plotTwist(Laspalabras)):-
+  paso(Serie, Temporada, Capitulo, plotTwist(Laspalabras)),
   cantidadDeEpisodios(Serie,Temporada,Capitulo),
-  not(escliche(plotTwist(Serie,Temporada,Capitulo,Laspalabras))).
+  not(escliche(plotTwist(Laspalabras))).
 
-pasoAlgoFuerte(Serie):-
-	 paso(Serie,_,_,muerte(_)).
-pasoAlgoFuerteEnTemporada(Serie):-
-	 paso(Serie,_,_,relacion(amorosa,_,_)).
-pasoAlgoFuerteEnTemporada(Serie):-
-	 paso(Serie,_,_,relacion(parentesco,_,_)).
+esUnSucesoFuerte(Serie, muerte(Persona)):-
+	paso(Serie,_,_,muerte(Persona)).
+esUnSucesoFuerte(Serie, relacion(amorosa,Persona1,Persona2)):-
+	paso(Serie,_,_,relacion(amorosa,Persona1,Persona2)).
+esUnSucesoFuerte(Serie, relacion(parentesco,Persona1,Persona2)):-
+	paso(Serie,_,_,relacion(parentesco,Persona1,Persona2)).
+
+
+
+
