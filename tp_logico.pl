@@ -48,11 +48,19 @@
 
 :- begin_tests(vienen_zafando).
 
-	test(maiu_no_viene_zafando_de_ninguna_serie, fail) :- vieneZafando(maiu, _).
+  test(maiu_no_viene_zafando_de_ninguna_serie, fail) :- vieneZafando(maiu, _).
 	test(juan_viene_zafando_con_himym_got_y_hoc, set(Serie == [himym,got,hoc])) :- vieneZafando(juan,Serie).
 	test(nico_viene_zafando_con_starWars, set(Persona == [nico])) :- vieneZafando(Persona,starWars).
 
 :- end_tests(vienen_zafando).
+
+:- begin_tests(segunda_entrega).
+  test(gaston_es_mala_gente, nondet) :- malaGente(gaston).
+	test(el_plotTwist_que_contiene_las_palabras_fuegoYBoda_en_GOT_es_fuerte, nondet) :- pasoAlgoFuerte(plotTwist(got,3,12,[fuego,boda])).
+	test(got_es_popular, nondet) :- popular(got).
+	test(nico_hizo_fullSpoil, set(Personas == [aye,juan,maiu,gaston])) :- fullSpoil(nico,Personas).
+
+:- end_tests(segunda_entrega).
 
 quienMira(juan,himym).
 quienMira(juan,futurama).
@@ -190,13 +198,13 @@ escliche(plotTwist(Serie,_,_,Laspalabras)):-
  Serie \= OtraSerie,
  forall(member(Palabra,Laspalabras),member(Palabra,Otraspalabras)).
 
-esFuerte(plotTwist(Serie,Temporada,Capitulo,Laspalabras)):-
+pasoAlgoFuerte(plotTwist(Serie,Temporada,Capitulo,Laspalabras)):-
   cantidadDeEpisodios(Serie,Temporada,Capitulo),
   not(escliche(plotTwist(Serie,Temporada,Capitulo,Laspalabras))).
 
-	pasoAlgoFuerte(Serie):-
+pasoAlgoFuerte(Serie):-
 	 paso(Serie,_,_,muerte(_)).
-	pasoAlgoFuerteEnTemporada(Serie):-
+pasoAlgoFuerteEnTemporada(Serie):-
 	 paso(Serie,_,_,relacion(amorosa,_,_)).
-	pasoAlgoFuerteEnTemporada(Serie):-
+pasoAlgoFuerteEnTemporada(Serie):-
 	 paso(Serie,_,_,relacion(parentesco,_,_)).
