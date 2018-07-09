@@ -55,7 +55,7 @@
 :- end_tests(vienen_zafando).
 
 :- begin_tests(segunda_entrega).
-  test(gaston_es_mala_gente, nondet) :- malaGente(gaston).
+  	test(gaston_es_mala_gente, nondet) :- malaGente(gaston).
 	test(el_plotTwist_que_contiene_las_palabras_fuegoYBoda_en_GOT_es_fuerte, nondet) :- pasoAlgoFuerte(plotTwist(got,3,12,[fuego,boda])).
 	test(got_es_popular, nondet) :- popular(got).
 	test(nico_hizo_fullSpoil, set(Personas == [aye,juan,maiu,gaston])) :- fullSpoil(nico,Personas).
@@ -71,6 +71,7 @@ quienMira(maiu,onePiece).
 quienMira(maiu,got).
 quienMira(nico,got).
 quienMira(gaston,hoc).
+quienMira(pedro,got).
 
 %no se agrega a Alf porque al no poner que mira alguna serie en la base de conocimientos, se asume que este no ve
 %ninguna por el principio de universo cerrado.
@@ -105,6 +106,11 @@ leDijo(nico, juan, got, muerte(tyrion)).
 leDijo(aye, juan, got, relacion(amistad, tyrion, john)).
 leDijo(aye, maiu, got, relacion(amistad, tyrion, john)).
 leDijo(aye, gaston, got, relacion(amistad, tyrion, dragon)).
+
+leDijo(nico,juan, futurama, muerte(seymourDiera)).
+leDijo(pedro, aye,got, relacion(amistad, tyrion, dragon)).
+leDijo(pedro, nico, got, relacion(parentesco, tyrion, dragon)).
+
 
 esSpoiler(Serie, CosaQuePaso) :- paso(Serie, _, _, CosaQuePaso).
 %se pueden hacer las dos consultas porque es inversible
@@ -163,6 +169,7 @@ cantidadTotalQueHablaSobre(Serie, TotalQueHabloSobre) :-
  length(Personas, TotalQueHabloSobre).
 
 popularidad(Serie, Popularidad) :-
+ miraOQuiereMirar(_, Serie),
  cantidadTotalQueMira(Serie, TotalQueMira),
  cantidadTotalQueHablaSobre(Serie, TotalQueHabloSobre),
  Popularidad is TotalQueMira * TotalQueHabloSobre.
@@ -171,6 +178,8 @@ popular(Serie) :-
  popularidad(Serie, PopularidadSerie),
  popularidad(starWars, PopularidadStarWars),
  PopularidadSerie >= PopularidadStarWars.
+
+popular(hoc).
 
 amigo(nico, maiu).
 amigo(maiu, gaston).
