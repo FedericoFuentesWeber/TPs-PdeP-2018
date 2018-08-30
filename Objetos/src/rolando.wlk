@@ -14,25 +14,30 @@ object hechizoComun{
 	method sosPoderoso() = false
 }
 
+object oscuridad {
+	var poder = 5
+	method eclipse() {
+		poder = poder * 2
+	}
+	method poder() = poder
+	
+}
 object rolando{
 	var valorBase = 3
 	var hechizoPreferido = espectroMalefico
-	var fuerzaOscura = 5
+	var fuerzaOscura = oscuridad
 	var valorBaseDeLucha = 1
 	const artefactos = []
 
 	method valorBase() = valorBase
 
 	method fuerzaOscura() = fuerzaOscura
-	method fuerzaOscura(unaFuerzaOscura){
-		fuerzaOscura = unaFuerzaOscura
-	}
-
+	
 	method hechizoPreferido() = hechizoPreferido
 	method hechizoPreferido(unHechizo){
 		hechizoPreferido = unHechizo
 	}
-	method nivelDeHechizeria() = (self.valorBase() * self.hechizoPreferido().poder()) + self.fuerzaOscura()
+	method nivelDeHechizeria() = (self.valorBase() * self.hechizoPreferido().poder()) + self.fuerzaOscura().poder()
 
 	method artefactos() = artefactos
 	method agregaUnArtefacto(unArtefacto) {
