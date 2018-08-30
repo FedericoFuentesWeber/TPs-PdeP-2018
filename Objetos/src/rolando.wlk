@@ -52,7 +52,7 @@ object rolando{
 	method eliminaTodosLosArtefactos(){
 		self.artefactos().clear()
 	}
-	method poderDeLuchaTotalDeTodosLosArtefactos() = self.artefactos().sum({artefacto => artefacto.poderDeLucha(self.fuerzaOscura())})
+	method poderDeLuchaTotalDeTodosLosArtefactos() = self.artefactos().sum({artefacto => artefacto.poderDeLucha(self.fuerzaOscura().poder())})
 
 	method valorBaseDeLucha() = valorBaseDeLucha
 	method valorBaseDeLucha(unValorBaseDeLucha){
@@ -64,8 +64,8 @@ object rolando{
 	method tenesMasHabilidadDeLuchaQueNivelDeHechizeria() = self.habilidadDeLucha() > self.nivelDeHechizeria()
 
 	method estasCargado() = artefactos.size() >= 5
-
-	method mejorArtefacto() = self.artefactos().max({ artefacto => artefacto.poderDeLucha(fuerzaOscura) })
+	
+	method mejorArtefacto() = self.artefactos().max({ artefacto => artefacto.poderDeLucha(self.fuerzaOscura().poder()) })
 }
 
 object espadaDelDestino{
@@ -73,7 +73,7 @@ object espadaDelDestino{
 }
 
 object collarDivino{
-	var cantidadDePerlas
+	var cantidadDePerlas = 5
 	method cantidadDePerlas() = cantidadDePerlas
 	method cantidadDePerlas(unaCantidadDePerlas){
 		cantidadDePerlas = unaCantidadDePerlas
