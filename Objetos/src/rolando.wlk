@@ -20,20 +20,20 @@ object rolando{
 	var fuerzaOscura = 5
 	var valorBaseDeLucha = 1
 	const artefactos = []
-	
+
 	method valorBase() = valorBase
-	
+
 	method fuerzaOscura() = fuerzaOscura
 	method fuerzaOscura(unaFuerzaOscura){
 		fuerzaOscura = unaFuerzaOscura
-	} 
-	
+	}
+
 	method hechizoPreferido() = hechizoPreferido
 	method hechizoPreferido(unHechizo){
 		hechizoPreferido = unHechizo
-	} 
+	}
 	method nivelDeHechizeria() = (self.valorBase() * self.hechizoPreferido().poder()) + self.fuerzaOscura()
-	
+
 	method artefactos() = artefactos
 	method agregaUnArtefacto(unArtefacto) {
 		self.artefactos().add(unArtefacto)
@@ -48,12 +48,12 @@ object rolando{
 		self.artefactos().clear()
 	}
 	method poderDeLuchaTotalDeTodosLosArtefactos() = self.artefactos().sum({artefacto => artefacto.poderDeLucha(self.fuerzaOscura())})
-	
+
 	method valorBaseDeLucha() = valorBaseDeLucha
 	method valorBaseDeLucha(unValorBaseDeLucha){
 		valorBaseDeLucha = unValorBaseDeLucha
 	}
-	
+
 	method habilidadDeLucha() = self.valorBaseDeLucha() + self.poderDeLuchaTotalDeTodosLosArtefactos()
 	
 	method tenesMasHabilidadDeLuchaQueNivelDeHechizeria() = self.habilidadDeLucha() > self.nivelDeHechizeria()
@@ -64,7 +64,7 @@ object espadaDelDestino{
 }
 
 object collarDivino{
-	var cantidadDePerlas 
+	var cantidadDePerlas
 	method cantidadDePerlas() = cantidadDePerlas
 	method cantidadDePerlas(unaCantidadDePerlas){
 		cantidadDePerlas = unaCantidadDePerlas
@@ -74,4 +74,60 @@ object collarDivino{
 
 object mascaraOscura{
 	method poderDeLucha(unaFuerzaOscura) = (unaFuerzaOscura/2).max(4)
+}
+
+
+object armadura{
+	var refuerzo
+
+	method refuerzo() = refuerzo
+	method refuerzo(nuevoRefuerzo) { refuerzo = nuevoRefuerzo }
+
+	method poderDeLucha(unaFuerzaOscura) = 2 + refuerzo.unidadesDeLucha()
+}
+
+object cotaDeMalla{
+	var unidadesDeLucha = 1
+
+	method unidadesDeLucha() = unidadesDeLucha
+}
+
+object bendicion{
+	var unidadesDeLucha
+
+	method unidadesDeLucha() = unidadesDeLucha
+	method unidadesDeLucha(nivelDeHechizeria) { unidadesDeLucha = nivelDeHechizeria}
+}
+
+object hechizo{
+	var unidadesDeLucha
+
+	method unidadesDeLucha() = unidadesDeLucha
+	method unidadesDeLucha(tipoHechizo) { unidadesDeLucha = tipoHechizo.poder() }
+}
+
+object ninguno {
+	var unidadesDeLucha = 0
+
+	method unidadesDeLucha() = unidadesDeLucha
+}
+
+object espejoFantastico{
+	var duenio = rolando
+
+	method duenio() = duenio
+	method duenio(nuevoDuenio) { duenio = nuevoDuenio }
+
+	method poderDeLucha(unaFuerzaOscura) = duenio.mejorArtefacto().poderDeLucha(unaFuerzaOscura)
+
+}
+
+object libroDeHechizos{
+	const hechizos = []
+
+	method hechizos() = hechizos
+	method agregarHechizos(nuevosHechizos) { self.hechizos().addall(nuevosHechizos) }
+	method agregarHechizo(nuevoHechizo) { self.hechizos().add(nuevoHechizo) }
+
+	method poder() = hechizos.filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
 }
