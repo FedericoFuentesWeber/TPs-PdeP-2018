@@ -1,0 +1,33 @@
+import rolando.*
+
+describe "tests de Lucha" {
+
+	fixture {
+		rolando.agregaUnosArtefactos([espadaDelDestino, collarDivino, mascaraOscura])
+		collarDivino.cantidadDePerlas(5)
+		rolando.valorBaseDeLucha(1)
+	}
+	test "Cuando Rolando no tiene artefactos, su habilidad de lucha es 1(valor base)" {
+		rolando.eliminaTodosLosArtefactos()
+		assert.equals(rolando.habilidadDeLucha(), rolando.valorBaseDeLucha())
+	}
+	test "Cuando rolando tiene puestos todos los artefactos, su habilidad de lucha es mas alta"{
+		assert.equals(rolando.habilidadDeLucha(), 13)
+	}
+	test "Cuando el collar tiene menos perlas, la habilidad de lucha de rolando disminuye"{
+		collarDivino.cantidadDePerlas(3)
+		assert.equals(rolando.habilidadDeLucha(), 11)
+	}
+	test "Cuando rolando incrementa su valor base de lucha, aumenta su habilidad de lucha"{
+		rolando.valorBaseDeLucha(8)
+		assert.equals(rolando.habilidadDeLucha(), 20)
+	}
+	test "Cuando se le elimina un artefacto a Rolando, su habilidad de lucha disminuye o queda igual"{
+		rolando.eliminaUnArtefacto(mascaraOscura)
+		assert.equals(rolando.habilidadDeLucha(), 9)
+	}
+	test "Cuando Rolando tiene como hechizo preferido a espectroMalefico y tiene sus tres artefactos puestos, su habilidad de lucha es menor que su nivel de hechizeria"{
+		rolando.hechizoPreferido(espectroMalefico)
+		assert.notThat(rolando.tenesMasHabilidadDeLuchaQueNivelDeHechizeria())
+	}
+}

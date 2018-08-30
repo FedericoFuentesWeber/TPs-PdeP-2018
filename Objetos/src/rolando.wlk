@@ -39,7 +39,7 @@ object rolando{
 		self.artefactos().add(unArtefacto)
 	}
 	method agregaUnosArtefactos(unosArtefactos){
-		self.artefactos().addall(unosArtefactos)
+		self.artefactos().addAll(unosArtefactos)
 	}
 	method eliminaUnArtefacto(unArtefacto){
 		self.artefactos().remove(unArtefacto)
@@ -55,6 +55,8 @@ object rolando{
 	}
 	
 	method habilidadDeLucha() = self.valorBaseDeLucha() + self.poderDeLuchaTotalDeTodosLosArtefactos()
+	
+	method tenesMasHabilidadDeLuchaQueNivelDeHechizeria() = self.habilidadDeLucha() > self.nivelDeHechizeria()
 }
 
 object espadaDelDestino{
@@ -71,5 +73,5 @@ object collarDivino{
 }
 
 object mascaraOscura{
-	method poderDeLucha(unaFuerzaOscura) = unaFuerzaOscura/2.max(4)
+	method poderDeLucha(unaFuerzaOscura) = (unaFuerzaOscura/2).max(4)
 }
