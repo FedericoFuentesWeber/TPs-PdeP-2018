@@ -55,8 +55,12 @@ object rolando{
 	}
 
 	method habilidadDeLucha() = self.valorBaseDeLucha() + self.poderDeLuchaTotalDeTodosLosArtefactos()
-	
+
 	method tenesMasHabilidadDeLuchaQueNivelDeHechizeria() = self.habilidadDeLucha() > self.nivelDeHechizeria()
+
+	method estasCargado() = artefactos.size() >= 5
+
+	method mejorArtefacto() = self.artefactos().max({ artefacto => artefacto.poderDeLucha(fuerzaOscura) })
 }
 
 object espadaDelDestino{
