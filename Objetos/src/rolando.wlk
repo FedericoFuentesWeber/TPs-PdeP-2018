@@ -20,7 +20,7 @@ object oscuridad {
 		poder = poder * 2
 	}
 	method poder() = poder
-	
+
 }
 object rolando{
 	var valorBase = 3
@@ -32,7 +32,7 @@ object rolando{
 	method valorBase() = valorBase
 
 	method fuerzaOscura() = fuerzaOscura
-	
+
 	method hechizoPreferido() = hechizoPreferido
 	method hechizoPreferido(unHechizo){
 		hechizoPreferido = unHechizo
@@ -64,7 +64,7 @@ object rolando{
 	method tenesMasHabilidadDeLuchaQueNivelDeHechizeria() = self.habilidadDeLucha() > self.nivelDeHechizeria()
 
 	method estasCargado() = artefactos.size() >= 5
-	
+
 	method mejorArtefacto() = self.artefactos().max({ artefacto => artefacto.poderDeLucha(self.fuerzaOscura().poder()) })
 }
 
@@ -127,7 +127,13 @@ object espejoFantastico{
 	method duenio() = duenio
 	method duenio(nuevoDuenio) { duenio = nuevoDuenio }
 
-	method poderDeLucha(unaFuerzaOscura) = duenio.mejorArtefacto().poderDeLucha(unaFuerzaOscura)
+	method esElUnicoArtefacto() = duenio.artefactos().size() == 1 && duenio.artefactos().contains(self)
+	method poderDeLucha(unaFuerzaOscura){
+		if(self.esElUnicoArtefacto())
+			return 0
+		else
+			return duenio.mejorArtefacto().poderDeLucha(duenio.fuerzaOscura())
+	}
 
 }
 
@@ -140,3 +146,6 @@ object libroDeHechizos{
 
 	method poder() = hechizos.filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
 }
+
+//Si solo se buscara agregarlo asi mismo no pasaria nada, pero en caso de querer averiguar cual seria el nivel de hechizeria de Rolando cuando tenga este libro como hechizo
+//preferido no podría hacerlo ya que no sabria como interpretar el method sosPoderoso()
