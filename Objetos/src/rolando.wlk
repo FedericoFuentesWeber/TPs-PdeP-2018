@@ -132,7 +132,7 @@ object espejoFantastico{
 		if(self.esElUnicoArtefacto())
 			return 0
 		else
-			return duenio.mejorArtefacto().poderDeLucha(duenio.fuerzaOscura())
+			return duenio.mejorArtefacto().poderDeLucha(duenio.fuerzaOscura().poder())
 	}
 
 }
