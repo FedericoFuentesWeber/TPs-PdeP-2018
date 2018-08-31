@@ -1,0 +1,37 @@
+import rolando.*
+
+describe "test sobre hechizeria" {
+
+	test "el nivel de hechizeria de ronaldo debe ser 53" {
+
+		assert.equals(rolando.nivelDeHechizeria(),56)
+	}
+	test "el poder de rolando con el nuevo nombre del espectro malefico es 125"{
+		
+		espectroMalefico.nombre("espectro superrecontramalefico muajajaja")
+		
+		assert.equals(rolando.nivelDeHechizeria(),125)
+	}
+	test "el poder de rolando con el hechizo basico es 35"{
+		rolando.hechizoPreferido(hechizoComun)
+		
+		assert.equals(rolando.nivelDeHechizeria(),35)
+	}
+	test "si ocurre un eclipse el poder de rolando es 63"{
+		oscuridad.eclipse()
+		
+		assert.equals(rolando.nivelDeHechizeria(),61)
+	}
+	test "el espectroMalefico es poderoso"{
+		
+		assert.that(espectroMalefico.sosPoderoso())
+	}
+	test " si le cambio el nombre del espectro a pepe este deja de ser poderoso"{
+		espectroMalefico.nombre("pepe")
+		
+		assert.notThat(espectroMalefico.sosPoderoso())
+	}
+	test " el hechizo comun no es poderoso"{
+		assert.notThat(hechizoComun.sosPoderoso())
+	}
+}
