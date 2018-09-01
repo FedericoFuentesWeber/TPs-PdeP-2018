@@ -141,8 +141,8 @@ object libroDeHechizos{
 	const hechizos = []
 
 	method hechizos() = hechizos
-	method agregarHechizos(nuevosHechizos) { self.hechizos().addall(nuevosHechizos) }
-	method agregarHechizo(nuevoHechizo) { self.hechizos().add(nuevoHechizo) }
+	method agregaHechizos(nuevosHechizos) { self.hechizos().addAll(nuevosHechizos) }
+	method agregaHechizo(nuevoHechizo) { self.hechizos().add(nuevoHechizo) }
 
 	method poder() = hechizos.filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
 }

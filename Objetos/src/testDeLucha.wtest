@@ -26,6 +26,10 @@ describe "tests de Lucha" {
 		rolando.eliminaUnArtefacto(mascaraOscura)
 		assert.equals(rolando.habilidadDeLucha(), 9)
 	}
+	test "Cuando ocurre un eclipse, aumenta el poder de lucha de la máscara oscura"{
+		oscuridad.eclipse()
+		assert.equals(mascaraOscura.poderDeLucha(rolando.fuerzaOscura().poder()), 5)
+	}
 	test "Cuando Rolando tiene como hechizo preferido a espectroMalefico y tiene sus tres artefactos puestos, su habilidad de lucha es menor que su nivel de hechizeria"{
 		rolando.hechizoPreferido(espectroMalefico)
 		assert.notThat(rolando.tenesMasHabilidadDeLuchaQueNivelDeHechizeria())
