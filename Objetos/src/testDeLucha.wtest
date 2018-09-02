@@ -4,7 +4,7 @@ describe "tests de Lucha" {
 
 	fixture {
 		rolando.agregaUnosArtefactos([espadaDelDestino, collarDivino, mascaraOscura])
-		collarDivino.cantidadDePerlas(5)
+		collarDivino.perlas(5)
 		rolando.valorBaseDeLucha(1)
 	}
 	test "Cuando Rolando no tiene artefactos, su habilidad de lucha es 1(valor base)" {
@@ -15,7 +15,7 @@ describe "tests de Lucha" {
 		assert.equals(rolando.habilidadDeLucha(), 13)
 	}
 	test "Cuando el collar tiene menos perlas, la habilidad de lucha de rolando disminuye"{
-		collarDivino.cantidadDePerlas(3)
+		collarDivino.perlas(3)
 		assert.equals(rolando.habilidadDeLucha(), 11)
 	}
 	test "Cuando rolando incrementa su valor base de lucha, aumenta su habilidad de lucha"{
@@ -27,11 +27,11 @@ describe "tests de Lucha" {
 		assert.equals(rolando.habilidadDeLucha(), 9)
 	}
 	test "Cuando ocurre un eclipse, aumenta el poder de lucha de la máscara oscura"{
-		oscuridad.eclipse()
-		assert.equals(mascaraOscura.poderDeLucha(rolando.fuerzaOscura().poder()), 5)
+		fuerzaOscura.eclipse()
+		assert.equals(mascaraOscura.poderDeLucha(), 5)
 	}
-	test "Cuando Rolando tiene como hechizo preferido a espectroMalefico y tiene sus tres artefactos puestos, su habilidad de lucha es menor que su nivel de hechizeria"{
+	test "Cuando Rolando tiene como hechizo preferido a espectroMalefico y tiene sus tres artefactos puestos, su habilidad de lucha es menor que su nivel de hechicería"{
 		rolando.hechizoPreferido(espectroMalefico)
-		assert.notThat(rolando.tenesMasHabilidadDeLuchaQueNivelDeHechizeria())
+		assert.notThat(rolando.tenesMasHabilidadDeLuchaQueNivelDeHechiceria())
 	}
 }
