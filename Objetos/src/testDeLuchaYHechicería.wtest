@@ -3,7 +3,7 @@ import rolando.*
 describe "Test de lucha y hechicería"{
 
 	fixture {
-		collarDivino.cantidadDePerlas(5)
+		collarDivino.perlas(5)
 		rolando.valorBaseDeLucha(1)
 		rolando.agregaUnosArtefactos([espadaDelDestino, collarDivino, mascaraOscura, armadura, espejoFantastico])
 	}

@@ -58,15 +58,15 @@ object rolando{
 		self.artefactos().clear()
 	}
 
-	method nivelDeHechiceria() = (valorBase * hechizoPreferido.poder()) + fuerzaOscura.poder()
+	method nivelDeHechiceria() = (self.valorBase() * self.hechizoPreferido().poder()) + fuerzaOscura.poder()
 
-	method poderDeLuchaTotalDeTodosLosArtefactos() = artefactos.sum({artefacto => artefacto.poderDeLucha()})
+	method poderDeLuchaTotalDeTodosLosArtefactos() = self.artefactos().sum({artefacto => artefacto.poderDeLucha()})
 
-	method habilidadDeLucha() = valorBaseDeLucha + self.poderDeLuchaTotalDeTodosLosArtefactos()
+	method habilidadDeLucha() = self.valorBaseDeLucha() + self.poderDeLuchaTotalDeTodosLosArtefactos()
 
 	method tenesMasHabilidadDeLuchaQueNivelDeHechiceria() = self.habilidadDeLucha() > self.nivelDeHechiceria()
 
-	method estasCargado() = artefactos.size() >= 5
+	method estasCargado() = self.artefactos().size() >= 5
 
 	method mejorArtefacto() = self.artefactos().max({ artefacto => artefacto.poderDeLucha() })
 }
@@ -98,7 +98,7 @@ object armadura{
 	method poderDeLucha(){
 		if(refuerzo == null)
 			return 2
-			return 2 + refuerzo.unidadesDeLucha()
+			return 2 + self.refuerzo().unidadesDeLucha()
 	}
 }
 
@@ -128,7 +128,7 @@ object espejoFantastico{
 	method duenio() = duenio
 	method duenio(nuevoDuenio) { duenio = nuevoDuenio }
 
-	method soloMeContieneAMi() = duenio.artefactos().size() == 1
+	method soloMeContieneAMi() = self.duenio().artefactos().size() == 1
 	method poderDeLucha(){
 		if(self.soloMeContieneAMi())
 			return 0
@@ -136,7 +136,7 @@ object espejoFantastico{
 	}
 
 	method maximoPoder(){
-	return duenio.artefactos()
+	return self.duenio().artefactos()
 	.filter({artefacto => !artefacto.equals(self)})
 	.max({artefacto => artefacto.poderDeLucha()}).poderDeLucha()
 	}
@@ -150,7 +150,7 @@ object libroDeHechizos{
 	method agregaHechizos(nuevosHechizos) { self.hechizos().addAll(nuevosHechizos) }
 	method agregaHechizo(nuevoHechizo) { self.hechizos().add(nuevoHechizo) }
 
-	method poder() = hechizos.filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
+	method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
 }
 
 //Si solo se buscara agregarlo asi mismo no pasaria nada, pero en caso de querer averiguar cual seria el nivel de hechicería de Rolando cuando tenga este libro como hechizo
