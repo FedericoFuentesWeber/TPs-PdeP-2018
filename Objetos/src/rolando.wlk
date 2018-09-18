@@ -1,12 +1,9 @@
 
 object espectroMalefico {
-	var nombre = "espectro maléfico"
-	method nombre() = nombre
-	method nombre(unNombre){
-		nombre = unNombre
-	}
+	var property nombre = "espectro maléfico"
+	
 	method poder() = nombre.size()
-	method sosPoderoso() = nombre.size() > 15
+	method sosPoderoso() = self.poder() > 15
 }
 
 object hechizoComun{
@@ -14,37 +11,20 @@ object hechizoComun{
 	method sosPoderoso() = false
 }
 
-object fuerzaOscura {
-	var poder = 5
-
-	method poder() = poder
-	method poder(unPoder) {poder = unPoder}
+object mundo {
+	var property fuerzaOscura = 5
 
 	method eclipse() {
-		poder = poder * 2
+		fuerzaOscura = fuerzaOscura * 2
 	}
 }
 
 object rolando{
-	var valorBase = 3
-	var hechizoPreferido = espectroMalefico
-	var valorBaseDeLucha = 1
-	const artefactos = []
+	var property valorBase = 3
+	var property hechizoPreferido = espectroMalefico
+	var property valorBaseDeLucha = 1
+	const property artefactos = []
 
-	method valorBase() = valorBase
-	method valorBase(unValorBase) {valorBase = unValorBase}
-
-	method valorBaseDeLucha() = valorBaseDeLucha
-	method valorBaseDeLucha(unValorBaseDeLucha){
-		valorBaseDeLucha = unValorBaseDeLucha
-	}
-
-	method hechizoPreferido() = hechizoPreferido
-	method hechizoPreferido(unHechizo){
-		hechizoPreferido = unHechizo
-	}
-
-	method artefactos() = artefactos
 	method agregaUnArtefacto(unArtefacto) {
 		self.artefactos().add(unArtefacto)
 	}
@@ -58,7 +38,7 @@ object rolando{
 		self.artefactos().clear()
 	}
 
-	method nivelDeHechiceria() = (self.valorBase() * self.hechizoPreferido().poder()) + fuerzaOscura.poder()
+	method nivelDeHechiceria() = (self.valorBase() * self.hechizoPreferido().poder()) + mundo.fuerzaOscura()
 
 	method poderDeLuchaTotalDeTodosLosArtefactos() = self.artefactos().sum({artefacto => artefacto.poderDeLucha()})
 
@@ -72,40 +52,26 @@ object rolando{
 }
 
 object espadaDelDestino{
-	method poderDeLucha(unaFuerzaOscura) = 3
+	method poderDeLucha() = 3
 }
 
 object collarDivino{
-	var perlas = 5
-
-	method poderDeLucha() = perlas
-	method perlas(unasPerlas){
-		perlas = unasPerlas
-	}
+	var property perlas = 5
 }
 
 object mascaraOscura{
-	method poderDeLucha() = (fuerzaOscura/2).max(4)
+	method poderDeLucha() = (mundo.fuerzaOscura()/2).max(4)
 }
 
 
 object armadura{
-	var refuerzo
+	var property refuerzo = ninguno
 
-	method refuerzo() = refuerzo
-	method refuerzo(nuevoRefuerzo) { refuerzo = nuevoRefuerzo }
-
-	method poderDeLucha(){
-		if(refuerzo == null)
-			return 2
-			return 2 + self.refuerzo().unidadesDeLucha()
-	}
+	method poderDeLucha() = 2 + self.refuerzo().unidadesDeLucha()
 }
 
 object cotaDeMalla{
-	var unidadesDeLucha = 1
-
-	method unidadesDeLucha() = unidadesDeLucha
+	method unidadesDeLucha() = 1
 }
 
 object bendicion{
@@ -122,11 +88,12 @@ object hechizo{
 	method unidadesDeLucha(tipoHechizo) { unidadesDeLucha = tipoHechizo.poder() }
 }
 
-object espejoFantastico{
-	var duenio = rolando
+object ninguno{
+	method unidadesDeLucha() = 0
+}
 
-	method duenio() = duenio
-	method duenio(nuevoDuenio) { duenio = nuevoDuenio }
+object espejoFantastico{
+	var property duenio = rolando
 
 	method soloMeContieneAMi() = self.duenio().artefactos().size() == 1
 	method poderDeLucha(){
@@ -144,14 +111,12 @@ object espejoFantastico{
 }
 
 object libroDeHechizos{
-	const hechizos = []
+	const property hechizos = []
 
-	method hechizos() = hechizos
 	method agregaHechizos(nuevosHechizos) { self.hechizos().addAll(nuevosHechizos) }
 	method agregaHechizo(nuevoHechizo) { self.hechizos().add(nuevoHechizo) }
 
 	method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
 }
 
-//Si solo se buscara agregarlo asi mismo no pasaria nada, pero en caso de querer averiguar cual seria el nivel de hechicería de Rolando cuando tenga este libro como hechizo
-//preferido no podría hacerlo ya que no sabria como interpretar el method sosPoderoso()
+/*No seria posible para el libro de hechizos agregarse a si mismo a su lista de hechizos ya que el libro no reconoze el method sosPoderoso */
