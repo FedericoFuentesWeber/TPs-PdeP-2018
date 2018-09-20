@@ -54,7 +54,7 @@ object rolando{
 	
 	method maximoPoderSinEspejo(){
 	return self.artefactos()
-	.filter({artefacto => !artefacto.equals(self)})
+	.filter({artefacto => !artefacto.equals(espejoFantastico)})
 	.max({artefacto => artefacto.poderDeLucha()}).poderDeLucha()
 	}
 }
