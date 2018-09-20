@@ -4,8 +4,6 @@ describe "tests de Lucha" {
 
 	fixture {
 		rolando.agregaUnosArtefactos([espadaDelDestino, collarDivino, mascaraOscura])
-		collarDivino.perlas(5)
-		rolando.valorBaseDeLucha(1)
 	}
 	test "Cuando Rolando no tiene artefactos, su habilidad de lucha es 1(valor base)" {
 		rolando.eliminaTodosLosArtefactos()
@@ -27,7 +25,7 @@ describe "tests de Lucha" {
 		assert.equals(rolando.habilidadDeLucha(), 9)
 	}
 	test "Cuando ocurre un eclipse, aumenta el poder de lucha de la máscara oscura"{
-		fuerzaOscura.eclipse()
+		mundo.eclipse()
 		assert.equals(mascaraOscura.poderDeLucha(), 5)
 	}
 	test "Cuando Rolando tiene como hechizo preferido a espectroMalefico y tiene sus tres artefactos puestos, su habilidad de lucha es menor que su nivel de hechicería"{

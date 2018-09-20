@@ -49,6 +49,14 @@ object rolando{
 	method estasCargado() = self.artefactos().size() >= 5
 
 	method mejorArtefacto() = self.artefactos().max({ artefacto => artefacto.poderDeLucha() })
+	
+	method soloContieneUnArtefacto(unArtefacto) = self.artefactos().contains(unArtefacto) && self.artefactos().size() == 1
+	
+	method maximoPoderSinEspejo(){
+	return self.artefactos()
+	.filter({artefacto => !artefacto.equals(self)})
+	.max({artefacto => artefacto.poderDeLucha()}).poderDeLucha()
+	}
 }
 
 object espadaDelDestino{
@@ -57,6 +65,8 @@ object espadaDelDestino{
 
 object collarDivino{
 	var property perlas = 5
+	
+	method poderDeLucha() = self.perlas()
 }
 
 object mascaraOscura{
@@ -93,21 +103,14 @@ object ninguno{
 }
 
 object espejoFantastico{
-	var property duenio = rolando
-
-	method soloMeContieneAMi() = self.duenio().artefactos().size() == 1
+ 	var property duenio = rolando
+ 	
+ 	method soloMeContieneAMi() = duenio.soloContieneUnArtefacto(self)
+	
 	method poderDeLucha(){
-		if(self.soloMeContieneAMi())
-			return 0
-			return self.maximoPoder()
+		if(self.soloMeContieneAMi()){return 0} 
+		else{return duenio.maximoPoderSinEspejo()}
 	}
-
-	method maximoPoder(){
-	return self.duenio().artefactos()
-	.filter({artefacto => !artefacto.equals(self)})
-	.max({artefacto => artefacto.poderDeLucha()}).poderDeLucha()
-	}
-
 }
 
 object libroDeHechizos{

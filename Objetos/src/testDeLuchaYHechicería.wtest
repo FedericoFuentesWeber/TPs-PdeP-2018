@@ -3,8 +3,6 @@ import rolando.*
 describe "Test de lucha y hechicería"{
 
 	fixture {
-		collarDivino.perlas(5)
-		rolando.valorBaseDeLucha(1)
 		rolando.agregaUnosArtefactos([espadaDelDestino, collarDivino, mascaraOscura, armadura, espejoFantastico])
 	}
 
@@ -16,36 +14,36 @@ describe "Test de lucha y hechicería"{
 		assert.notThat(rolando.estasCargado())
 	}
 	test "Rolando tiene una habilidad de lucha igual a 20"{
-		assert.equals(20, rolando.habilidadDeLucha())
+		assert.equals(rolando.habilidadDeLucha(), 20)
 	}
 	test "Cuando la armadura de Rolando tiene un refuerzo de bendición su poder de lucha es de 58"{
 		armadura.refuerzo(bendicion)
 		bendicion.unidadesDeLucha(rolando.nivelDeHechiceria())
-		assert.equals(58, armadura.poderDeLucha())
+		assert.equals(armadura.poderDeLucha(), 58)
 	}
 	test "Cuando la armadura de Rolando tiene un refuerzo de cota de malla su poder de lucha es de 3"{
 		armadura.refuerzo(cotaDeMalla)
-		assert.equals(3, armadura.poderDeLucha())
+		assert.equals(armadura.poderDeLucha(), 3)
 	}
 	test "Cuando la armadura de Rolando tiene un refuerzo de hechizo común su poder de lucha es de 12"{
 		hechizo.unidadesDeLucha(hechizoComun)
 		armadura.refuerzo(hechizo)
-		assert.equals(12, armadura.poderDeLucha())
+		assert.equals(armadura.poderDeLucha(), 12)
 	}
 	test "Cuando la armadura de Rolando tiene un refuerzo de espectro maléfico su poder de lucha es de 19"{
 		hechizo.unidadesDeLucha(espectroMalefico)
 		armadura.refuerzo(hechizo)
-		assert.equals(19, armadura.poderDeLucha())
+		assert.equals(armadura.poderDeLucha(), 19)
 	}
 	test "Cuando Rolando solo tiene el espejo entre sus artefactos su habilidad de lucha es de 1"{
 	 rolando.eliminaTodosLosArtefactos()
 	 rolando.agregaUnArtefacto(espejoFantastico)
-	 assert.equals(1, rolando.habilidadDeLucha())
+	 assert.equals(rolando.habilidadDeLucha(), 1)
 	}
 	test "Con un libro de hechizos con el hechizo básico y el espectro maléfico Rolando tiene un nivel de hechizeria de 56"{
 		espectroMalefico.nombre("espectro maléfico")
 		libroDeHechizos.agregaHechizos([espectroMalefico, hechizoComun])
 		rolando.hechizoPreferido(libroDeHechizos)
-		assert.equals(56, rolando.nivelDeHechiceria())
+		assert.equals(rolando.nivelDeHechiceria(), 56)
 	}
 }

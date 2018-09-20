@@ -14,7 +14,7 @@ describe "test sobre hechiceria" {
 		assert.equals(rolando.nivelDeHechiceria(),35)
 	}
 	test "Si ocurre un eclipse el poder de Rolando es 63"{
-		fuerzaOscura.eclipse()
+		mundo.eclipse()
 		assert.equals(rolando.nivelDeHechiceria(),61)
 	}
 	test "El espectro maléfico es poderoso"{
