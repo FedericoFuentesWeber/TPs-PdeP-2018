@@ -8,7 +8,7 @@ object mundo {
 	}
 }
 
-object espadaDelDestino{
+class Arma{
 	method poderDeLucha() = 3
 }
 
@@ -18,10 +18,12 @@ object collarDivino{
 	method poderDeLucha() = self.perlas()
 }
 
-object mascaraOscura{
-	method poderDeLucha() = (mundo.fuerzaOscura()/2).max(4)
+class Mascara{
+	var property indiceDeOscuridad
+	var property minimoValorDeLucha = 4
+	
+	method poderDeLucha() = ((mundo.fuerzaOscura()/2) * self.indiceDeOscuridad()).max(self.minimoValorDeLucha()) 
 }
-
 
 object armadura{
 	var property duenio
