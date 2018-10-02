@@ -6,6 +6,7 @@ class Personaje{
 	var property valorBase = 3
 	var property hechizoPreferido
 	var property valorBaseDeLucha = 1
+	var property monedas = 100
 	const property artefactos = []
 
 	method agregaUnArtefacto(unArtefacto) {
@@ -39,5 +40,10 @@ class Personaje{
 	return self.artefactos()
 	.filter({artefacto => !artefacto.equals(self)})
 	.max({artefacto => artefacto.poderDeLucha()}).poderDeLucha()
+	}
+	
+	method compraHechizo(hechizo){
+		self.monedas(self.monedas() - (hechizo.precio() - self.hechizoPreferido().precio()).max(0))
+		self.hechizoPreferido(hechizo)
 	}
 }
