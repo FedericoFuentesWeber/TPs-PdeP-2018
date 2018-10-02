@@ -12,12 +12,14 @@ object mundo {
 class ArmaDeFilo{
 
 	method poderDeLucha(duenio) = 3
+	method precio(duenio)= 5 * self.poderDeLucha(duenio)
 }
 
 object collarDivino{
 	var property perlas = 5
 
 	method poderDeLucha(duenio) = self.perlas()
+	method precio(duenio) = 2 * self.perlas()
 }
 
 class Mascara{
@@ -30,6 +32,7 @@ class Mascara{
 object espejoFantastico {
 
  	method soloMeContieneAMi(duenio) = duenio.soloContieneUnArtefacto(self)
+ 	method precio(duenio) = 90 
 	
 	method poderDeLucha(duenio){
 		if(self.soloMeContieneAMi(duenio)){return 0} 

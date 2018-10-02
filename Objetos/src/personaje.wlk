@@ -1,5 +1,7 @@
 import artefactos.*
 import hechizo.*
+import Armadura.*
+import CotaDeMalla.*
 
 
 class Personaje{
@@ -40,6 +42,13 @@ class Personaje{
 	return self.artefactos()
 	.filter({artefacto => !artefacto.equals(espejoFantastico)})
 	.max({artefacto => artefacto.poderDeLucha(self)}).poderDeLucha(self)
+	}
+	method realizaUnObjetivo(){
+		self.monedas(self.monedas() + 10)
+	}
+	method compraObjecto(objecto){
+		self.monedas(self.monedas()- objecto.precio(self))
+		self.artefactos().add(objecto)
 	}
 	
 	method compraHechizo(hechizo){
