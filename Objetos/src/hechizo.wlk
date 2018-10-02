@@ -5,6 +5,8 @@ class Hechizo {
 	method poder() = self.nombre().size() * self.variableDePoder()
 	method sosPoderoso() = self.poder() > 15
 	
+	method unidadesDeLucha(duenio) = self.poder() 
+	
 }
 /*
 class HechizoBasico inherits Hechizo{
@@ -18,4 +20,5 @@ class HechizoBasico inherits Hechizo{
  	
  	method poder() = 10
  	method sosPoderoso() = false
+ 	method unidadesDeLucha(duenio) = self.poder() 
  }

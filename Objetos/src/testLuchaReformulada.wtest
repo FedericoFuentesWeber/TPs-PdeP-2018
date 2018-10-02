@@ -3,7 +3,7 @@ import personaje.*
 import hechizo.*
 
 describe "Test de lucha reformulada" {
-	const espadaDelDestino = new Arma()
+	const espadaDelDestino = new ArmaDeFilo()
 	const mascaraOscura = new Mascara(indiceDeOscuridad = 1)
 	const mascaraParaNadaOscura = new Mascara(indiceDeOscuridad = 0)
 	var rolando = new Personaje()
@@ -29,7 +29,7 @@ describe "Test de lucha reformulada" {
 	}
 	test "Despues de un eclipse el poder de lucha de la mascara es de 5"{
 		mundo.eclipse()
-		assert.equals(5, mascaraOscura.poderDeLucha())
+		assert.equals(5, mascaraOscura.poderDeLucha(rolando))
 	}
 	test "La habilidad de lucha de Rolando es de 9 cuando se elimina la mascara oscura de sus artefactos"{
 		rolando.eliminaUnArtefacto(mascaraOscura)
@@ -38,13 +38,13 @@ describe "Test de lucha reformulada" {
 	test "El poder de lucha de la mascara de Rolando cuando es para nada oscura es de 4"{
 		rolando.eliminaUnArtefacto(mascaraOscura)
 		rolando.agregaUnArtefacto(mascaraParaNadaOscura)
-		assert.equals(4, mascaraParaNadaOscura.poderDeLucha())
+		assert.equals(4, mascaraParaNadaOscura.poderDeLucha(rolando))
 	}
 	test "El poder de lucha de la mascara de Rolando cuando es apra anda oscura con valor minimo 2 es de 2"{
 		rolando.eliminaUnArtefacto(mascaraOscura)
 		mascaraParaNadaOscura.minimoValorDeLucha(2)
 		rolando.agregaUnArtefacto(mascaraParaNadaOscura)
-		assert.equals(2, mascaraParaNadaOscura.poderDeLucha())
+		assert.equals(2, mascaraParaNadaOscura.poderDeLucha(rolando))
 	}
 
 }
