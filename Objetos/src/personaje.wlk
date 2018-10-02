@@ -24,7 +24,7 @@ class Personaje{
 
 	method nivelDeHechiceria() = (self.valorBase() * self.hechizoPreferido().poder()) + mundo.fuerzaOscura()
 
-	method poderDeLuchaTotalDeTodosLosArtefactos() = self.artefactos().sum({artefacto => artefacto.poderDeLucha()})
+	method poderDeLuchaTotalDeTodosLosArtefactos() = self.artefactos().sum({artefacto => artefacto.poderDeLucha(self)})
 
 	method habilidadDeLucha() = self.valorBaseDeLucha() + self.poderDeLuchaTotalDeTodosLosArtefactos()
 
@@ -38,8 +38,8 @@ class Personaje{
 	
 	method maximoPoderSinEspejo(){
 	return self.artefactos()
-	.filter({artefacto => !artefacto.equals(self)})
-	.max({artefacto => artefacto.poderDeLucha()}).poderDeLucha()
+	.filter({artefacto => !artefacto.equals(espejoFantastico)})
+	.max({artefacto => artefacto.poderDeLucha(self)}).poderDeLucha(self)
 	}
 	
 	method compraHechizo(hechizo){
