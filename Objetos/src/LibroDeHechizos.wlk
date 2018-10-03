@@ -4,7 +4,7 @@ class LibroDeHechizos {
 
 	method agregaHechizos(nuevosHechizos) { self.hechizos().addAll(nuevosHechizos) }
 	method agregaHechizo(nuevoHechizo) { self.hechizos().add(nuevoHechizo) }
-	method precio(duenio) = self.hechizos().size() + self.hechizos().sum({magia => magia.poder()})
+	method precio(duenio) = self.hechizos().size() * 10 + self.hechizos().sum({magia => magia.poder()})
 
 	method poder() = self.hechizos().filter({hechizo => hechizo.sosPoderoso()}).sum({hechizo => hechizo.poder()})
 }

@@ -1,6 +1,6 @@
 class CotaDeMalla {
 	
-	var property unidadesDeLucha = 1
+	var property unidadesDeLucha 
 	method unidadesDeLucha(duenio) = unidadesDeLucha
-	method precio(valor) = self.unidadesDeLucha() / 2
+	method precioParaLaArmadura(valor) = self.unidadesDeLucha() / 2
 }

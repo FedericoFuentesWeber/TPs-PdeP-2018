@@ -46,13 +46,15 @@ class Personaje{
 	method realizaUnObjetivo(){
 		self.monedas(self.monedas() + 10)
 	}
-	method compraObjecto(objecto){
+	method compraObjeto(objecto){
 		self.monedas(self.monedas()- objecto.precio(self))
 		self.artefactos().add(objecto)
 	}
+	method puedoCostearUnHechizo(compra)= self.monedas() > (compra.precio() - self.hechizoPreferido().precio() / 2)
+	method puedoCostearUnObjeto(objecto)= self.monedas() > objecto.precio(self)
 	
 	method compraHechizo(hechizo){
-		self.monedas(self.monedas() - (hechizo.precio() - self.hechizoPreferido().precio()).max(0))
+		self.monedas(self.monedas() - (hechizo.precio() - self.hechizoPreferido().precio() / 2).max(0))
 		self.hechizoPreferido(hechizo)
 	}
 }

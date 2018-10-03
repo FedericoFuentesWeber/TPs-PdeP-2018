@@ -6,16 +6,16 @@ class Armadura {
 	var property valorBase = 2
 
 	method poderDeLucha(duenio) = self.valorBase() + self.refuerzo().unidadesDeLucha(duenio)
-	method precio(duenio) = self.refuerzo().precio(self.valorBase())
+	method precio(duenio) = self.refuerzo().precioParaLaArmadura(self.valorBase())
 }
 
 object bendicion{
 
 	method unidadesDeLucha(duenio) = duenio.nivelDeHechiceria()
-	method precio(valor) = valor
+	method precioParaLaArmadura(valor) = valor
 }
 
 object ninguno{
 	method unidadesDeLucha(duenio) = 0
-	method precio(valor) = 2
+	method precioParaLaArmadura(valor) = 2
 }
