@@ -31,7 +31,7 @@ describe "Test de lucha mas avanzada" {
 		assert.equals(armadura.poderDeLucha(rolando), 58)
 	}
 	test "Cuando la armadura de Rolando tiene un refuerzo de cota de malla su poder de lucha es de 3"{
-		armadura.refuerzo(new CotaDeMalla())
+		armadura.refuerzo(new CotaDeMalla(unidadesDeLucha = 1))
 		assert.equals(armadura.poderDeLucha(rolando), 3)
 	}
 	test "Cuando la armadura de Rolando tiene un refuerzo de hechizo común su poder de lucha es de 12"{
