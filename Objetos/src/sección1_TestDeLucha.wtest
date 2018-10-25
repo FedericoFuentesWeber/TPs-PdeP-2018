@@ -1,0 +1,50 @@
+import personaje.*
+import artefactos.*
+import hechizo.*
+import mundo.*
+
+describe "tests de Lucha" {
+
+	const espadaDelDestino = new ArmaDeFilo()
+	const collarDivino = new CollarDivino()
+	const mascaraOscura = new Mascara(indiceDeOscuridad = 1)
+	const rolando = new Personaje(
+		artefactos = [ espadaDelDestino, collarDivino, mascaraOscura ],
+		hechizoPreferido = new Logos(nombre = "espectro malefico")
+	)
+
+	test "1) Cuando Rolando no tiene artefactos, su habilidad de lucha es 1(valor base)" {
+		rolando.eliminaTodosLosArtefactos()
+		assert.equals(rolando.habilidadDeLucha(), rolando.valorBaseDeLucha())
+	}
+
+	test "2) Cuando rolando tiene puestos todos los artefactos, su habilidad de lucha es mas alta" {
+		assert.equals(rolando.habilidadDeLucha(), 13)
+	}
+
+	test "3) Cuando el collar tiene menos perlas, la habilidad de lucha de rolando disminuye" {
+		collarDivino.perlas(3)
+		assert.equals(rolando.habilidadDeLucha(), 11)
+	}
+
+	test "4) Cuando rolando incrementa su valor base de lucha, aumenta su habilidad de lucha" {
+		rolando.valorBaseDeLucha(8)
+		assert.equals(rolando.habilidadDeLucha(), 20)
+	}
+
+	test "5) Cuando se le elimina un artefacto a Rolando, su habilidad de lucha disminuye o queda igual" {
+		rolando.eliminaUnArtefacto(mascaraOscura)
+		assert.equals(rolando.habilidadDeLucha(), 9)
+	}
+
+	test "6) Cuando ocurre un eclipse, aumenta el poder de lucha de la máscara oscura" {
+		mundo.eclipse()
+		assert.equals(mascaraOscura.poderDeLucha(rolando), 5)
+	}
+
+	test "7) Cuando Rolando tiene como hechizo preferido a espectroMalefico y tiene sus tres artefactos puestos, su habilidad de lucha es menor que su nivel de hechicería" {
+		assert.notThat(rolando.tenesMasHabilidadDeLuchaQueNivelDeHechiceria())
+	}
+
+}
+

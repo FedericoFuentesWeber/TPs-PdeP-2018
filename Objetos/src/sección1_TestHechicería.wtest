@@ -1,0 +1,42 @@
+import personaje.*
+import hechizo.*
+import mundo.*
+
+describe "test sobre hechiceria" {
+	const espectroMalefico = new Logos(nombre = "espectro malefico")
+	const rolando = new Personaje(hechizoPreferido = espectroMalefico)
+	
+	test "1) El nivel de hechiceria de Ronaldo debe ser 56" {
+		assert.equals(rolando.nivelDeHechiceria(), 56)
+	}
+
+	test "2) El poder de Rolando con el nuevo nombre del espectro maléfico es 125" {
+		rolando.hechizoPreferido().nombre("espectro superrecontramalefico muajajaja")
+		assert.equals(rolando.nivelDeHechiceria(), 125)
+	}
+
+	test "3) El poder de Rolando con el hechizo básico es 35" {
+		rolando.hechizoPreferido(hechizoBasico)
+		assert.equals(rolando.nivelDeHechiceria(), 35)
+	}
+
+	test "4) Si ocurre un eclipse el poder de Rolando es 63" {
+		mundo.eclipse()
+		assert.equals(rolando.nivelDeHechiceria(), 61)
+	}
+
+	test "5) El espectro maléfico es poderoso" {
+		assert.that(espectroMalefico.sosPoderoso())
+	}
+
+	test "6) Si le cambio el nombre del espectro a pepe este deja de ser poderoso" {
+		espectroMalefico.nombre("pepe")
+		assert.notThat(rolando.hechizoPreferido().sosPoderoso())
+	}
+
+	test "7) El hechizo común no es poderoso" {
+		assert.notThat(hechizoBasico.sosPoderoso())
+	}
+
+}
+

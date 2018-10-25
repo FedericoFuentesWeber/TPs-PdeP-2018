@@ -1,0 +1,71 @@
+import artefactos.*
+import personaje.*
+import hechizo.*
+import LibroDeHechizos.*
+
+describe "test de comercio" {
+
+	const alacachulacachicomula = new Logos(nombre = "alacachula cachicomula")
+	var xenia = new Personaje(hechizoPreferido = alacachulacachicomula)
+	var loqui = new Personaje(monedas = 5, hechizoPreferido = hechizoBasico)
+	var thor = new Personaje(hechizoPreferido = hechizoBasico)
+
+	method compraElLoteDeArtefactos(comprador) {
+		comprador.compraObjeto(new Armadura())
+		comprador.compraObjeto(new Armadura(refuerzo = new CotaDeMalla(unidadesDeLucha = 5)))
+		comprador.compraObjeto(new ArmaDeFilo())
+		comprador.compraObjeto(new CollarDivino())
+	}
+
+	test "1) El precio del hechizo alacachula cachicomula es 22" {
+		assert.equals(alacachulacachicomula.precio(), 22)
+	}
+
+	test "2) Xenia compra el hechizo basico y le sale gratis" {
+		xenia.compraHechizo(hechizoBasico)
+		assert.equals(xenia.monedas(), 100)
+	}
+
+	test "3) Thor compra el hechizo alacachula cachicomula y se queda con 83 monedas" {
+		thor.compraHechizo(alacachulacachicomula)
+		assert.equals(thor.monedas(), 83)
+	}
+	
+	test "4) Thor compra el hechizo básico dos veces y se queda con 90 monedas"{
+		thor.compraHechizo(hechizoBasico)
+		thor.compraHechizo(hechizoBasico)
+		assert.equals(thor.monedas(), 90)
+	}
+
+	test "5) Loki no puede comprar el hechizo alacachula cachicomula" {
+		assert.notThat(loqui.puedoCostearUnHechizo(alacachulacachicomula))
+	}
+
+	test "6) y 7) Xenia compra una espada, un collar de 5 perlas, una armadura sin refuerzo, otra con cota de malla y se queda con 70,5,
+son 4 artefactos en total" {
+		xenia.compraObjeto(new Armadura())
+		xenia.compraObjeto(new Armadura(refuerzo = new CotaDeMalla(unidadesDeLucha = 5)))
+		xenia.compraObjeto(new ArmaDeFilo())
+		xenia.compraObjeto(new CollarDivino())
+		assert.equals(xenia.monedas(), 70.5)
+		assert.equals(xenia.artefactos().size(), 4)
+	}
+
+	test "8) Thor compra una armadura con bendicion, otra con el hechizo alacachulacachicomula y se queda con 74" {
+		thor.compraObjeto(new Armadura(refuerzo = bendicion))
+		thor.compraObjeto(new Armadura(refuerzo = alacachulacachicomula))
+		assert.equals(thor.monedas(), 74)
+	}
+
+	test "9) Loki no puede comprar el espejo fantastico" {
+		assert.notThat(loqui.puedoCostearUnObjeto(espejoFantastico))
+	}
+
+	test "10) Xenia compra un libro de hechizos con el hechizo alacachulacachicomula y el basico" {
+		const libro = new LibroDeHechizos(hechizos = [ hechizoBasico, alacachulacachicomula ])
+		xenia.compraObjeto(libro)
+		assert.equals(xenia.monedas(), 48)
+	}
+
+}
+

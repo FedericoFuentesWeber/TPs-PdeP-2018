@@ -1,0 +1,62 @@
+import personaje.*
+import artefactos.*
+import hechizo.*
+import LibroDeHechizos.*
+
+describe "Test de lucha y hechicería" {
+
+	const espadaDelDestino = new ArmaDeFilo()
+	const collarDivino = new CollarDivino()
+	const armadura = new Armadura()
+	const mascaraOscura = new Mascara(indiceDeOscuridad = 1)
+	const rolando = new Personaje(
+		artefactos = [ espadaDelDestino, collarDivino, mascaraOscura, armadura, espejoFantastico ],
+		hechizoPreferido = new Logos(nombre = "espectro malefico")
+	)
+
+	test "1) Cuando Rolando tiene 5 ó mas artefactos esta cargado" {
+		assert.that(rolando.estasCargado())
+	}
+
+	test "2) Cuando Rolando se saca la armadura no esta mas cargado" {
+		rolando.eliminaUnArtefacto(armadura)
+		assert.notThat(rolando.estasCargado())
+	}
+
+	test "3) Rolando tiene una habilidad de lucha igual a 20" {
+		assert.equals(rolando.habilidadDeLucha(), 20)
+	}
+
+	test "4) Cuando la armadura de Rolando tiene un refuerzo de bendición su poder de lucha es de 58" {
+		armadura.refuerzo(bendicion)
+		assert.equals(armadura.poderDeLucha(rolando), 58)
+	}
+
+	test "5) Cuando la armadura de Rolando tiene un refuerzo de cota de malla su poder de lucha es de 3" {
+		armadura.refuerzo(new CotaDeMalla(unidadesDeLucha = 1))
+		assert.equals(armadura.poderDeLucha(rolando), 3)
+	}
+
+	test "6) Cuando la armadura de Rolando tiene un refuerzo de hechizo básico su poder de lucha es de 12" {
+		armadura.refuerzo(hechizoBasico)
+		assert.equals(armadura.poderDeLucha(rolando), 12)
+	}
+
+	test "7) Cuando la armadura de Rolando tiene un refuerzo de espectro maléfico su poder de lucha es de 19" {
+		armadura.refuerzo(new Logos(nombre = "espectro malefico"))
+		assert.equals(armadura.poderDeLucha(rolando), 19)
+	}
+
+	test "8) Cuando Rolando solo tiene el espejo entre sus artefactos su habilidad de lucha es de 1" {
+		rolando.eliminaTodosLosArtefactos()
+		rolando.agregaUnArtefacto(espejoFantastico)
+		assert.equals(rolando.habilidadDeLucha(), 1)
+	}
+
+	test "9) Con un libro de hechizos con el hechizo básico y el espectro maléfico Rolando tiene un nivel de hechizeria de 56" {
+		rolando.hechizoPreferido(new LibroDeHechizos(hechizos = [hechizoBasico, new Logos(nombre = "espectro malefico")]))
+		assert.equals(rolando.nivelDeHechiceria(), 56)
+	}
+
+}
+

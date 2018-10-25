@@ -1,45 +1,89 @@
 import personaje.*
 import hechizo.*
+import mundo.*
 
-object mundo {
-	var property fuerzaOscura = 5
+class ArmaDeFilo {
 
-	method eclipse() {
-		fuerzaOscura = fuerzaOscura * 2
-	}
+	const property puntosAportados = 3
+
+	method poderDeLucha(duenio) = self.puntosAportados()
+
+	method precio() = 5 * self.puntosAportados()
+
 }
 
-class ArmaDeFilo{
+class CollarDivino {
 
-	method poderDeLucha(duenio) = 3
-	method precio(duenio)= 5 * self.poderDeLucha(duenio)
-}
-
-object collarDivino{
 	var property perlas = 5
 
 	method poderDeLucha(duenio) = self.perlas()
-	method precio(duenio) = 2 * self.perlas()
+
+	method precio() = 2 * self.perlas()
+
 }
 
-class Mascara{
+class Mascara {
+
 	var property indiceDeOscuridad
 	var property minimoValorDeLucha = 4
 
-	method poderDeLucha(duenio) = ((mundo.fuerzaOscura()/2) * self.indiceDeOscuridad()).max(self.minimoValorDeLucha()) 
+	method poderDeLucha(duenio) = ((mundo.fuerzaOscura() / 2) * self.indiceDeOscuridad()).max(self.minimoValorDeLucha())
+
 }
 
 object espejoFantastico {
 
- 	method soloMeContieneAMi(duenio) = duenio.soloContieneUnArtefacto(self)
- 	method precio(duenio) = 90 
-	
-	method poderDeLucha(duenio){
-		if(self.soloMeContieneAMi(duenio)){return 0} 
-		else{return duenio.maximoPoderSinEspejo()}
+	method soloMeContieneAMi(duenio) = duenio.soloContieneUnArtefacto(self)
+
+	method precio() = 90
+
+	method poderDeLucha(duenio) {
+		if (self.soloMeContieneAMi(duenio)) {
+			return 0
+		} else {
+			return duenio.maximoPoderSinEspejo()
+		}
 	}
+
 }
 
 /*Si se modela al metodo que calcula su poder de lucha de manera que reciba como parametro al personaje que lo posee
- , no es necesario que haya muchos espejos* 
+ *  , no es necesario que haya muchos espejos* 
  */
+class Armadura {
+
+	var property refuerzo = ninguno
+	var property valorBase = 2
+
+	method poderDeLucha(duenio) = self.valorBase() + self.refuerzo().unidadesDeLucha(duenio)
+
+	method precio() = self.refuerzo().precioParaLaArmadura(self.valorBase())
+
+}
+
+object bendicion {
+
+	method unidadesDeLucha(duenio) = duenio.nivelDeHechiceria()
+
+	method precioParaLaArmadura(valorBase) = valorBase
+
+}
+
+object ninguno {
+
+	method unidadesDeLucha(duenio) = 0
+
+	method precioParaLaArmadura(valorBase) = 2
+
+}
+
+class CotaDeMalla {
+
+	const property unidadesDeLucha
+
+	method unidadesDeLucha(duenio) = self.unidadesDeLucha()
+
+	method precioParaLaArmadura(valorBase) = self.unidadesDeLucha() / 2
+
+}
+
