@@ -3,8 +3,8 @@ import hechizo.*
 import mundo.*
 
 class Artefacto{
-	var property pesoOriginal
-	const property fechaDeCompra
+	var property pesoOriginal = 1
+	const property fechaDeCompra = new Date()
 	method pesoTotal() = self.pesoOriginal() - self.desgaste()
 	
 	method desgaste() = (self.antiguedadEnDias() / 1000).min(1)

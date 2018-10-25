@@ -11,12 +11,12 @@ class Personaje {
 	var property monedas = 100
 	const property artefactos = []
 
-	const property pesoMaximoCargable 
+	const property pesoMaximoCargable = 20		//un valor por defecto cualquiera
 	
 	method pesoDeUnosArtefactos(unosArtefactos) = unosArtefactos.sum({artefacto => artefacto.pesoTotal()})
 	method pesoCargado() = self.pesoDeUnosArtefactos(self.artefactos())
 	
-	method podesCargarElArtefacto(unArtefacto) = (unArtefacto.peso() + self.pesoCargado()) <= self.pesoMaximoCargable()
+	method podesCargarElArtefacto(unArtefacto) = (unArtefacto.pesoTotal() + self.pesoCargado()) <= self.pesoMaximoCargable()
 	method noPodesCargarElArtefacto(unArtefacto) = self.podesCargarElArtefacto(unArtefacto).negate()
 	
 	method podesCargarLosArtefactos(unosArtefactos) = (self.pesoDeUnosArtefactos(unosArtefactos) + self.pesoCargado()) <= self.pesoMaximoCargable()
