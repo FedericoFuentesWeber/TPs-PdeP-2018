@@ -1,6 +1,7 @@
 import artefactos.*
 import hechizo.*
 import mundo.*
+import excepciones.*
 
 class Personaje {
 
@@ -10,11 +11,27 @@ class Personaje {
 	var property monedas = 100
 	const property artefactos = []
 
+	const property pesoMaximoCargable 
+	
+	method pesoDeUnosArtefactos(unosArtefactos) = unosArtefactos.sum({artefacto => artefacto.pesoTotal()})
+	method pesoCargado() = self.pesoDeUnosArtefactos(self.artefactos())
+	
+	method podesCargarElArtefacto(unArtefacto) = (unArtefacto.peso() + self.pesoCargado()) <= self.pesoMaximoCargable()
+	method noPodesCargarElArtefacto(unArtefacto) = self.podesCargarElArtefacto(unArtefacto).negate()
+	
+	method podesCargarLosArtefactos(unosArtefactos) = (self.pesoDeUnosArtefactos(unosArtefactos) + self.pesoCargado()) <= self.pesoMaximoCargable()
+	method noPodesCargarLosArtefactos(unosArtefactos) = self.podesCargarLosArtefactos(unosArtefactos).negate()
+	
 	method agregaUnArtefacto(unArtefacto) {
+		if(self.noPodesCargarElArtefacto(unArtefacto)){
+			throw new ExcepcionPorExcesoDePesoCargado(message = "El personaje no puede cargar el artefacto porque excede lo maximo de peso que puede cargar")
+		}
 		self.artefactos().add(unArtefacto)
 	}
-
-	method agregaUnosArtefactos(unosArtefactos) {
+	method agregaUnosArtefactos(unosArtefactos){
+		if(self.noPodesCargarLosArtefactos(unosArtefactos)){
+			throw new ExcepcionPorExcesoDePesoCargado(message = "El personaje no puede cargar los artefacto porque exceden lo maximo de peso que puede cargar")
+		}
 		self.artefactos().addAll(unosArtefactos)
 	}
 

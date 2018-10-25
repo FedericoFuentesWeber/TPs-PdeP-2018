@@ -1,0 +1,1 @@
+class ExcepcionPorExcesoDePesoCargado inherits Exception{}

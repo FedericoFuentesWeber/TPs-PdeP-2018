@@ -12,6 +12,11 @@ class Hechizo {
 	method unidadesDeLucha(duenio) = self.poder()
 
 	method sosPoderoso() = self.poder() > 15
+	
+	method peso(){
+		if (self.poder().even()) return 2
+		else return 1
+	} 
 
 }
 
@@ -26,7 +31,7 @@ class HechizoComercial inherits Hechizo {
 
 	override method nombre() = "el hechizo comercial"
 
-	override method poder() = (self.nombre() * self.porcentajeDePoder()) * self.multiplicadorDePoder()
+	override method poder() = (self.nombre().size() * self.porcentajeDePoder()) * self.multiplicadorDePoder()
 
 }
 
