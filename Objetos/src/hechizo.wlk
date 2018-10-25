@@ -11,11 +11,22 @@ class Hechizo {
 
 	method unidadesDeLucha(duenio) = self.poder()
 
+	method sosPoderoso() = self.poder() > 15
+
 }
 
 class Logos inherits Hechizo {
 
-	method sosPoderoso() = self.poder() > 15
+}
+
+class HechizoComercial inherits Hechizo {
+
+	var property porcentajeDePoder = 0.2
+	var property multiplicadorDePoder = 2
+
+	override method nombre() = "el hechizo comercial"
+
+	override method poder() = (self.nombre() * self.porcentajeDePoder()) * self.multiplicadorDePoder()
 
 }
 
