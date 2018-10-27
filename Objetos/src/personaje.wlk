@@ -2,6 +2,7 @@ import artefactos.*
 import hechizo.*
 import mundo.*
 import excepciones.*
+import comerciante.*
 
 class Personaje {
 
@@ -65,8 +66,8 @@ class Personaje {
 		self.monedas(self.monedas() + 10)
 	}
 
-	method compraObjeto(objeto) {
-		self.monedas(self.monedas() - objeto.precio())
+	method compraObjeto(objeto,comerciante) {
+		self.monedas(self.monedas() - comerciante.cobrale(objeto))
 		self.artefactos().add(objeto)
 	}
 

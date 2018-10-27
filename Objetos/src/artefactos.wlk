@@ -18,7 +18,7 @@ class ArmaDeFilo inherits Artefacto{
 
 	method poderDeLucha(duenio) = self.puntosAportados()
 
-	method precio() = 5 * self.puntosAportados()
+	method precio() = 5 * self.pesoTotal()
 
 }
 
@@ -41,7 +41,8 @@ class Mascara inherits Artefacto{
 	var property minimoValorDeLucha = 4
 
 	method poderDeLucha(duenio) = self.poderDeLucha()
-	method poderDeLucha() = ((mundo.fuerzaOscura()/2) * self.indiceDeOscuridad()).max(self.minimoValorDeLucha()) 
+	method poderDeLucha() = ((mundo.fuerzaOscura()/2) * self.indiceDeOscuridad()).max(self.minimoValorDeLucha())
+	method precio() = 10 * self.indiceDeOscuridad() 
 	
 	override method pesoTotal() = super() + self.pesoDeLucha()
 	method pesoDeLucha() = (self.poderDeLucha() - 3).max(0)
