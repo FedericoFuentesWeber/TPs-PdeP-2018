@@ -2,6 +2,7 @@ import artefactos.*
 import personaje.*
 import hechizo.*
 import mundo.*
+import comerciante.*
 
 describe "Pesos de los artefactos" {
 
@@ -16,55 +17,54 @@ describe "Pesos de los artefactos" {
 	const armaduraSinRefuerzo = new Armadura(pesoOriginal = 12, fechaDeCompra = new Date())
 	const merlin = new Personaje(pesoMaximoCargable = 10, hechizoPreferido = null)
 	const ursula = new Personaje(pesoMaximoCargable = 200, hechizoPreferido = null, artefactos = [mascaraOscura, armaduraConCotaDeMalla])
+	const mock = new ComercianteIndependiente(comicion = 0)
 
-	test "El peso total de una espada muy vieja, con un peso inicial de 7 kg, es de 6 kg" {
+	test "1) El peso total de una espada muy vieja, con un peso inicial de 7 kg, es de 6 kg" {
 		assert.equals(espadaVieja.pesoTotal(), 6)
 	}
-	test "El peso total de una espada nueva, con un peso inicial de 4 kg, es de 4 kg"{
+	test "2) El peso total de una espada nueva, con un peso inicial de 4 kg, es de 4 kg"{
 		assert.equals(espadaNueva.pesoTotal(), 4)
 	}
-	test "El peso total de una espada con un peso inicial de 5 kg y una antiguedad de 50 dias, es de 4.95 kg"{
+	test "3) El peso total de una espada con un peso inicial de 5 kg y una antiguedad de 50 dias, es de 4.95 kg"{
 		assert.equals(espadaComun.pesoTotal(), 4.95)
 	}
-	test "El peso de un collar divino con 5 perlas es de 2.5 kg"{
+	test "4) El peso de un collar divino con 5 perlas es de 2.5 kg"{
 		const unCollarDivino = new CollarDivino(pesoOriginal = 0,fechaDeCompra = new Date())
 		assert.equals(unCollarDivino.pesoTotal(), 2.5)
 	}
-	test "El peso de una mascara oscura con un peso inicial de 3 kg y un indice de oscuridad de 1, es de 3 kg"{
+	test "5) El peso de una mascara oscura con un peso inicial de 3 kg y un indice de oscuridad de 1, es de 3 kg"{
 		assert.equals(mascaraOscura.pesoTotal(), 3)
 	}
-	test "Luego de un eclipse, el peso de una mascara oscura con un peso inicial de 3 kg y un indice de oscuridad de 1, es de 5 kg"{
+	test "6) Luego de un eclipse, el peso de una mascara oscura con un peso inicial de 3 kg y un indice de oscuridad de 1, es de 5 kg"{
 		mundo.eclipse()
 		assert.equals(mascaraOscura.pesoTotal(), 5)
 	}
-	test "El peso de una mascara clara con un peso inicial de 2 kg, un indice de oscuridad de 0 y un poder minimo de lucha de 0, es de 2 kg"{
+	test "7) El peso de una mascara clara con un peso inicial de 2 kg, un indice de oscuridad de 0 y un poder minimo de lucha de 0, es de 2 kg"{
 		assert.equals(mascaraClara.pesoTotal(), 2)
 	}
-	test "El peso total de una armadura con una peso inicial de 10 kg y teniendo de refuerzo a una cota de malla, es de 11 kg"{
+	test "8) El peso total de una armadura con una peso inicial de 10 kg y teniendo de refuerzo a una cota de malla, es de 11 kg"{
 		assert.equals(armaduraConCotaDeMalla.pesoTotal(), 11)
 	}
-	test "El peso total de una armadura con una peso inicial de 12 kg y teniendo de refuerzo a un hechizo con nivel de poder par, es de 14 kg"{
+	test "9) El peso total de una armadura con una peso inicial de 12 kg y teniendo de refuerzo a un hechizo con nivel de poder par, es de 14 kg"{
 		assert.equals(armaduraConHechizoPar.pesoTotal(), 14)
 	}
-	test "El peso total de una armadura con una peso inicial de 12 kg y teniendo de refuerzo a un hechizo con nivel de poder impar, es de 13 kg"{
+	test "10) El peso total de una armadura con una peso inicial de 12 kg y teniendo de refuerzo a un hechizo con nivel de poder impar, es de 13 kg"{
 		assert.equals(armaduraConHechizoImpar.pesoTotal(), 13)
 	}
-	test "El peso total de una armadura con una peso inicial de 12 kg y sin refuerzo, es de 12 kg"{
+	test "11) El peso total de una armadura con una peso inicial de 12 kg y sin refuerzo, es de 12 kg"{
 		assert.equals(armaduraSinRefuerzo.pesoTotal(), 12)
 	}
-	/*
-	 * 
-	test "El peso que carga Merlin luego de comprar una mascara clara y una oscura, con pesos iniciales de 2 y 3 kg respectivamente, es de 5 kg"{
-		
-		assert.that(true)
+	/* 
+	test "12) El peso que carga Merlin luego de comprar una mascara clara y una oscura, con pesos iniciales de 2 y 3 kg respectivamente, es de 5 kg"{
+		merlin.compra(mascaraOscura, mock)
+		merlin.compra(mascaraClara, mock)
+		assert.equals(merlin.pesoCargado(), 5)
 	}
-	test "Merlin no puede comprar una armadura con un hechizo par, con un peso total de 14 kg, porque el peso maximo que puede cargar es de 10 kg"{
-		
-		assert.throwsExceptionLike(new ExcepcionPorExcesoDePesoCargado("El artefacto es muy pesado para que lo pueda cargar el personaje"), {merlin.compra(armaduraConHechizoPar)})
+	test "13) Merlin no puede comprar una armadura con un hechizo par, con un peso total de 14 kg, porque el peso maximo que puede cargar es de 10 kg"{
+		assert.throwsExceptionLike(new ExcepcionPorExcesoDePesoCargado("El artefacto es muy pesado para que lo pueda cargar el personaje"), {merlin.compra(armaduraConHechizoPar, mock)})
 	}
-	* 
 	*/
-	test"Si ursula carga una armadura de 11 kg y una mascara oscura de 3 kg, y se desprede de la armadura, termina cargando con un peso total de 3 kg"{
+	test"14) Si ursula carga una armadura de 11 kg y una mascara oscura de 3 kg, y se desprede de la armadura, termina cargando con un peso total de 3 kg"{
 		ursula.eliminaUnArtefacto(armaduraConCotaDeMalla)
 		assert.equals(ursula.pesoCargado(), 3)
 	}

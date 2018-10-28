@@ -1,0 +1,20 @@
+import artefactos.*
+import PersonajeNoControladoPorHumano.*
+
+describe "tests de Lucha" {
+
+	const navi =  new PersonajeNoControladoPorHumano(nivelDeDificultad = dificultadFacil)
+	const mascaraClara = new Mascara(indiceDeOscuridad = 0)
+	const ashleyGraham = new PersonajeNoControladoPorHumano(nivelDeDificultad = dificultadModerada, valorBaseDeLucha = 5, artefactos = [mascaraClara])
+	
+	test "1) La habilidad de lucha de navi con con un nivel de dificultad facil, un valor base de lucha de 1 y sin artefactos, es de 1" {
+		assert.equals(navi.habilidadDeLucha(),1)
+	}
+	test "2) La habilidad de lucha de Ashley Graham con un valor base de lucha de 5, una dificultad moderada y una mascara clara como artefacto, es de 18"{
+		assert.equals(ashleyGraham.habilidadDeLucha(), 18)
+	}
+	test "3) La habilidad de lucha de Ashley Graham con un valor base de lucha de 5, una dificultad dificil y una mascara clara como artefacto, es de 18"{
+		ashleyGraham.nivelDeDificultad(dificultadDificil)
+		assert.equals(ashleyGraham.habilidadDeLucha(), 36)
+	}
+}
