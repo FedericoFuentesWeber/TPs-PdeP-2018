@@ -17,7 +17,7 @@ describe "Pesos de los artefactos" {
 	const armaduraSinRefuerzo = new Armadura(pesoOriginal = 12, fechaDeCompra = new Date())
 	const merlin = new Personaje(pesoMaximoCargable = 10, hechizoPreferido = null)
 	const ursula = new Personaje(pesoMaximoCargable = 200, hechizoPreferido = null, artefactos = [ mascaraOscura, armaduraConCotaDeMalla ])
-	const mock = new ComercianteIndependiente(comicion = 0)
+	const mock = new Comicion(valor = 0)
 
 	test "1) El peso total de una espada muy vieja, con un peso inicial de 7 kg, es de 6 kg" {
 		assert.equals(espadaVieja.pesoTotal(), 6)
