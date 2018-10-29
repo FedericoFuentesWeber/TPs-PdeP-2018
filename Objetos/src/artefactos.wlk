@@ -9,7 +9,7 @@ class Artefacto {
 
 	method pesoTotal() = self.pesoOriginal() - self.desgaste()
 
-	method desgaste() = (self.antiguedadEnDias() / 1000).max(1)
+	method desgaste() = (self.antiguedadEnDias() / 1000).min(1)
 
 	method antiguedadEnDias() = new Date() - self.fechaDeCompra()
 
