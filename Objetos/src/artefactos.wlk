@@ -2,17 +2,20 @@ import personaje.*
 import hechizo.*
 import mundo.*
 
-class Artefacto{
+class Artefacto {
+
 	var property pesoOriginal = 1
 	const property fechaDeCompra = new Date()
+
 	method pesoTotal() = self.pesoOriginal() - self.desgaste()
-	
-	method desgaste() = (self.antiguedadEnDias() / 1000).min(1)
-	method antiguedadEnDias() = new Date() - self.fechaDeCompra() 
-	
+
+	method desgaste() = (self.antiguedadEnDias() / 1000).max(1)
+
+	method antiguedadEnDias() = new Date() - self.fechaDeCompra()
+
 }
 
-class ArmaDeFilo inherits Artefacto{
+class ArmaDeFilo inherits Artefacto {
 
 	const property puntosAportados = 3
 
@@ -22,34 +25,38 @@ class ArmaDeFilo inherits Artefacto{
 
 }
 
-class CollarDivino inherits Artefacto{
+class CollarDivino inherits Artefacto {
 
 	var property perlas = 5
 
 	method poderDeLucha(duenio) = self.perlas()
 
 	method precio() = 2 * self.perlas()
-	
+
 	override method pesoTotal() = super() + self.pesoPerlas()
+
 	method pesoPerlas() = self.perlas() * 0.5
 
 }
 
-class Mascara inherits Artefacto{
+class Mascara inherits Artefacto {
 
 	var property indiceDeOscuridad
 	var property minimoValorDeLucha = 4
 
 	method poderDeLucha(duenio) = self.poderDeLucha()
-	method poderDeLucha() = ((mundo.fuerzaOscura()/2) * self.indiceDeOscuridad()).max(self.minimoValorDeLucha())
-	method precio() = 10 * self.indiceDeOscuridad() 
-	
+
+	method poderDeLucha() = ((mundo.fuerzaOscura() / 2) * self.indiceDeOscuridad()).max(self.minimoValorDeLucha())
+
+	method precio() = 10 * self.indiceDeOscuridad()
+
 	override method pesoTotal() = super() + self.pesoDeLucha()
+
 	method pesoDeLucha() = (self.poderDeLucha() - 3).max(0)
 
 }
 
-object espejoFantastico inherits Artefacto{
+object espejoFantastico inherits Artefacto {
 
 	method soloMeContieneAMi(duenio) = duenio.soloContieneUnArtefacto(self)
 
@@ -68,7 +75,7 @@ object espejoFantastico inherits Artefacto{
 /*Si se modela al metodo que calcula su poder de lucha de manera que reciba como parametro al personaje que lo posee
  *  , no es necesario que haya muchos espejos* 
  */
-class Armadura inherits Artefacto{
+class Armadura inherits Artefacto {
 
 	var property refuerzo = ninguno
 	var property valorBase = 2
@@ -76,7 +83,7 @@ class Armadura inherits Artefacto{
 	method poderDeLucha(duenio) = self.valorBase() + self.refuerzo().unidadesDeLucha(duenio)
 
 	method precio() = self.refuerzo().precioParaLaArmadura(self.valorBase())
-	
+
 	override method pesoTotal() = super() + refuerzo.peso()
 
 }
@@ -86,7 +93,7 @@ object bendicion {
 	method unidadesDeLucha(duenio) = duenio.nivelDeHechiceria()
 
 	method precioParaLaArmadura(valorBase) = valorBase
-	
+
 	method peso() = 0
 
 }
@@ -96,6 +103,7 @@ object ninguno {
 	method unidadesDeLucha(duenio) = 0
 
 	method precioParaLaArmadura(valorBase) = 2
+
 	method peso() = 0
 
 }
@@ -107,7 +115,7 @@ class CotaDeMalla {
 	method unidadesDeLucha(duenio) = self.unidadesDeLucha()
 
 	method precioParaLaArmadura(valorBase) = self.unidadesDeLucha() / 2
-	
+
 	method peso() = 1
 
 }
