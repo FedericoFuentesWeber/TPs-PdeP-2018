@@ -41,7 +41,7 @@ object hechizoBasico {
 
 	method sosPoderoso() = false
 
-	method precio() = 10
+	method precio() = self.poder()
 
 	method precioParaLaArmadura(valorBase) = valorBase + self.precio()
 

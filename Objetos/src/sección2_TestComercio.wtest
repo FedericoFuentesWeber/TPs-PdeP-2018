@@ -10,7 +10,7 @@ describe "test de comercio" {
 	var xenia = new Personaje(hechizoPreferido = alacachulacachicomula)
 	var loqui = new Personaje(monedas = 5, hechizoPreferido = hechizoBasico)
 	var thor = new Personaje(hechizoPreferido = hechizoBasico)
-	const mock = new ComercianteIndependiente(metodo = new Comicion(valor = 0))
+	const mock = new Comerciante(metodo = new Comicion(valor = 0))
 
 	/*
 	 * method compraElLoteDeArtefactos(comprador) {

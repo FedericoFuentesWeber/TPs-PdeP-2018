@@ -7,9 +7,9 @@ import comerciante.*
 describe "test de comerciantes" {
 
 	var ursula = new Personaje(hechizoPreferido = hechizoBasico)
-	var pastoriza = new ComercianteIndependiente(metodo = new Comicion(valor = 0.9))
-	var prieto = new ComercianteRegistrado()
-	var ferpetin = new ComercianteConImpuestoALasGanancias()
+	var pastoriza = new Comerciante(metodo = new Comicion(valor = 0.9))
+	var prieto = new Comerciante(metodo = impuestoAlValorAgregado)
+	var ferpetin = new Comerciante(metodo = minimoNoImponible)
 	var mascarita = new Mascara(indiceDeOscuridad = 1)
 
 	test "1) si ursula le compra la mascara a pastoriza se queda con 89.1 monedas" {
