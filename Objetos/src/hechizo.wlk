@@ -5,13 +5,17 @@ class Hechizo {
 
 	method poder() = self.nombre().size() * self.variableDePoder()
 
-	method precio() = self.poder()
+	method precioBase() = self.poder()
+	
+	method precio(persona)=(self.precioBase() - persona.hechizoPreferido().precioBase() / 2).max(0)
 
-	method precioParaLaArmadura(valorBase) = valorBase + self.precio()
+	method precioParaLaArmadura(valorBase) = valorBase + self.precioBase()
 
 	method unidadesDeLucha(duenio) = self.poder()
 
 	method sosPoderoso() = self.poder() > 15
+	
+	method asignate(persona) = persona.hechizoPreferido(self)
 	
 	method peso(){
 		if (self.poder().even()) return 2
@@ -41,9 +45,12 @@ object hechizoBasico {
 
 	method sosPoderoso() = false
 
-	method precio() = self.poder()
+	method precio(persona)=(self.precioBase() - persona.hechizoPreferido().precioBase() / 2).max(0)
 
-	method precioParaLaArmadura(valorBase) = valorBase + self.precio()
+	method precioBase() = self.poder()
+	method asignate(persona) = persona.hechizoPreferido(self)
+
+	method precioParaLaArmadura(valorBase) = valorBase + self.precioBase()
 
 	method unidadesDeLucha(duenio) = self.poder()
 

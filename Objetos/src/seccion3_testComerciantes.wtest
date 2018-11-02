@@ -13,42 +13,42 @@ describe "test de comerciantes" {
 	var mascarita = new Mascara(indiceDeOscuridad = 1)
 
 	test "1) si ursula le compra la mascara a pastoriza se queda con 89.1 monedas" {
-		ursula.compraObjeto(mascarita, pastoriza)
+		ursula.compra(mascarita, pastoriza)
 		assert.equals(ursula.monedas(), 89.1)
 	}
 
 	test "2) si ursula le compra la mascara a prieto se queda con 87.9" {
-		ursula.compraObjeto(mascarita, prieto)
+		ursula.compra(mascarita, prieto)
 		assert.equals(ursula.monedas(), 87.9)
 	}
 
 	test "3) si ursula le compra la mascara a ferpetin se queda con 88.25" {
-		ursula.compraObjeto(mascarita, ferpetin)
+		ursula.compra(mascarita, ferpetin)
 		assert.equals(ursula.monedas(), 88.25)
 	}
 
 	test "4) si pastoriza se recategoriza y ursula le compra la mascara se queda con 88.25" {
 		pastoriza.recategorizate()
-		ursula.compraObjeto(mascarita, pastoriza)
+		ursula.compra(mascarita, pastoriza)
 		assert.equals(ursula.monedas(), 88.2)
 	}
 
 	test "5) si pastoriza se recategoriza 2 veces y ursula le compra la mascara se queda con 87.9" {
 		pastoriza.recategorizate()
 		pastoriza.recategorizate()
-		ursula.compraObjeto(mascarita, pastoriza)
+		ursula.compra(mascarita, pastoriza)
 		assert.equals(ursula.monedas(), 87.9)
 	}
 
 	test "6) si prieto se recategoriza y ursula le compra la mascar se queda con 88.25" {
 		prieto.recategorizate()
-		ursula.compraObjeto(mascarita, prieto)
+		ursula.compra(mascarita, prieto)
 		assert.equals(ursula.monedas(), 88.25)
 	}
 
 	test "7) si ferpetin se recategoriza y ursula le compra la mascar se quedas con 88.25" {
 		ferpetin.recategorizate()
-		ursula.compraObjeto(mascarita, ferpetin)
+		ursula.compra(mascarita, ferpetin)
 		assert.equals(ursula.monedas(), 88.25)
 	}
 

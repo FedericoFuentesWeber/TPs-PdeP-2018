@@ -9,8 +9,9 @@ class LibroDeHechizos {
 	method agregaHechizo(nuevoHechizo) {
 		self.hechizos().add(nuevoHechizo)
 	}
+	method asignate(persona)=persona.artefactos().add(self)
 
-	method precio() = self.hechizos().size() * 10 + self.hechizos().sum({ magia => magia.poder() })
+	method precio(persona) = self.hechizos().size() * 10 + self.hechizos().sum({ magia => magia.poder() })
 
 	method poder() = self.hechizos().filter({ hechizo => hechizo.sosPoderoso() }).sum({ hechizo => hechizo.poder() })
 

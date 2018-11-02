@@ -20,22 +20,22 @@ describe "test de comercio" {
 	 * 	comprador.compraObjeto(new CollarDivino(pesoOriginal = 0, fechaDeCompra = new Date(30,10,2018)))
 	 } */
 	test "1) El precio del hechizo alacachula cachicomula es 22" {
-		assert.equals(alacachulacachicomula.precio(), 22)
+		assert.equals(alacachulacachicomula.precioBase(), 22)
 	}
 
 	test "2) Xenia compra el hechizo basico y le sale gratis" {
-		xenia.compraHechizo(hechizoBasico)
+		xenia.compra(hechizoBasico,mock)
 		assert.equals(xenia.monedas(), 100)
 	}
 
 	test "3) Thor compra el hechizo alacachula cachicomula y se queda con 83 monedas" {
-		thor.compraHechizo(alacachulacachicomula)
+		thor.compra(alacachulacachicomula,mock)
 		assert.equals(thor.monedas(), 83)
 	}
 
 	test "4) Thor compra el hechizo básico dos veces y se queda con 90 monedas" {
-		thor.compraHechizo(hechizoBasico)
-		thor.compraHechizo(hechizoBasico)
+		thor.compra(hechizoBasico,mock)
+		thor.compra(hechizoBasico,mock)
 		assert.equals(thor.monedas(), 90)
 	}
 
@@ -45,17 +45,17 @@ describe "test de comercio" {
 
 	test "6) y 7) Xenia compra una espada, un collar de 5 perlas, una armadura sin refuerzo, otra con cota de malla y se queda con 70,5,
 son 4 artefactos en total" {
-		xenia.compraObjeto(new Armadura(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
-		xenia.compraObjeto(new Armadura(refuerzo = new CotaDeMalla(unidadesDeLucha = 5)), mock)
-		xenia.compraObjeto(new ArmaDeFilo(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
-		xenia.compraObjeto(new CollarDivino(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
+		xenia.compra(new Armadura(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
+		xenia.compra(new Armadura(refuerzo = new CotaDeMalla(unidadesDeLucha = 5)), mock)
+		xenia.compra(new ArmaDeFilo(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
+		xenia.compra(new CollarDivino(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
 		assert.equals(xenia.monedas(), 85.5)
 		assert.equals(xenia.artefactos().size(), 4)
 	}
 
 	test "8) Thor compra una armadura con bendicion, otra con el hechizo alacachulacachicomula y se queda con 74" {
-		thor.compraObjeto(new Armadura(refuerzo = bendicion), mock)
-		thor.compraObjeto(new Armadura(refuerzo = alacachulacachicomula), mock)
+		thor.compra(new Armadura(refuerzo = bendicion), mock)
+		thor.compra(new Armadura(refuerzo = alacachulacachicomula), mock)
 		assert.equals(thor.monedas(), 74)
 	}
 
@@ -65,7 +65,7 @@ son 4 artefactos en total" {
 
 	test "10) Xenia compra un libro de hechizos con el hechizo alacachulacachicomula y el basico" {
 		const libro = new LibroDeHechizos(hechizos = [ hechizoBasico, alacachulacachicomula ])
-		xenia.compraObjeto(libro, mock)
+		xenia.compra(libro, mock)
 		assert.equals(xenia.monedas(), 48)
 	}
 

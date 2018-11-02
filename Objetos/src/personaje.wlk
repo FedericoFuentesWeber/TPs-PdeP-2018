@@ -66,19 +66,15 @@ class Personaje {
 		self.monedas(self.monedas() + 10)
 	}
 
-	method compraObjeto(objeto,comerciante) {
-		self.monedas(self.monedas() - comerciante.cobrale(objeto))
-		self.artefactos().add(objeto)
+	method compra(objeto,comerciante) {
+		self.monedas(self.monedas() - comerciante.cobrale(objeto,self))
+		objeto.asignate(self)
 	}
 
-	method puedoCostearUnHechizo(compra) = self.monedas() > (compra.precio() - self.hechizoPreferido().precio() / 2)
+	method puedoCostearUnHechizo(compra) = self.monedas() > (compra.precioBase() - self.hechizoPreferido().precioBase() / 2)
 
-	method puedoCostearUnObjeto(objecto) = self.monedas() > objecto.precio()
+	method puedoCostearUnObjeto(objecto) = self.monedas() > objecto.precio(self)
 
-	method compraHechizo(hechizo) {
-		self.monedas(self.monedas() - (hechizo.precio() - self.hechizoPreferido().precio() / 2).max(0))
-		self.hechizoPreferido(hechizo)
-	}
 
 }
 

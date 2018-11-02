@@ -12,6 +12,8 @@ class Artefacto {
 	method desgaste() = (self.antiguedadEnDias() / 1000).min(1)
 
 	method antiguedadEnDias() = new Date() - self.fechaDeCompra()
+	
+	method asignate(persona) = persona.artefactos().add(self)
 
 }
 
@@ -21,7 +23,7 @@ class ArmaDeFilo inherits Artefacto {
 
 	method poderDeLucha(duenio) = self.puntosAportados()
 
-	method precio() = 5 * self.pesoTotal()
+	method precio(persona) = 5 * self.pesoTotal()
 
 }
 
@@ -31,7 +33,7 @@ class CollarDivino inherits Artefacto {
 
 	method poderDeLucha(duenio) = self.perlas()
 
-	method precio() = 2 * self.perlas()
+	method precio(persona) = 2 * self.perlas()
 
 	override method pesoTotal() = super() + self.pesoPerlas()
 
@@ -48,7 +50,7 @@ class Mascara inherits Artefacto {
 
 	method poderDeLucha() = ((mundo.fuerzaOscura() / 2) * self.indiceDeOscuridad()).max(self.minimoValorDeLucha())
 
-	method precio() = 10 * self.indiceDeOscuridad()
+	method precio(persona) = 10 * self.indiceDeOscuridad()
 
 	override method pesoTotal() = super() + self.pesoDeLucha()
 
@@ -60,7 +62,7 @@ object espejoFantastico inherits Artefacto {
 
 	method soloMeContieneAMi(duenio) = duenio.soloContieneUnArtefacto(self)
 
-	method precio() = 90
+	method precio(persona) = 90
 
 	method poderDeLucha(duenio) {
 		if (self.soloMeContieneAMi(duenio)) {
@@ -82,7 +84,7 @@ class Armadura inherits Artefacto {
 
 	method poderDeLucha(duenio) = self.valorBase() + self.refuerzo().unidadesDeLucha(duenio)
 
-	method precio() = self.refuerzo().precioParaLaArmadura(self.valorBase())
+	method precio(persona) = self.refuerzo().precioParaLaArmadura(self.valorBase())
 
 	override method pesoTotal() = super() + refuerzo.peso()
 
