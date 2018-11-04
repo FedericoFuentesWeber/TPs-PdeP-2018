@@ -7,7 +7,9 @@ class Hechizo {
 
 	method precioBase() = self.poder()
 	
-	method precio(persona)=(self.precioBase() - persona.hechizoPreferido().precioBase() / 2).max(0)
+	method descuento(persona) = persona.hechizoPreferido().precioBase() / 2
+	
+	method precio(persona)=(self.precioBase() - self.descuento(persona)).max(0)
 
 	method precioParaLaArmadura(valorBase) = valorBase + self.precioBase()
 

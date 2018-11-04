@@ -1,27 +1,27 @@
 class Comerciante{
-	var property metodo
-	method cobrale(objeto,persona)= self.metodo().calcula(objeto,persona)
-	method recategorizate() = self.metodo().recategorizate(self)
+	var property metodoDeCobro
+	method cobrale(objeto,persona)= self.metodoDeCobro().calculaCostoDelObjeto(objeto,persona)
+	method recategorizate() = self.metodoDeCobro().recategorizate(self)
 	
 }
 
 class Comicion {
 	var property valor
-	method calcula(objeto,persona) = objeto.precio(persona) + self.valor()
+	method calculaCostoDelObjeto(objeto,persona) = objeto.precio(persona) + self.valor()
 	method recategorizate(comerciante){
 		self.valor(self.valor()*2)
 		if (self.valor() > 2.1){
-			comerciante.metodo(impuestoAlValorAgregado)
+			comerciante.metodoDeCobro(impuestoAlValorAgregado)
 		}
 	}
 }
 object impuestoAlValorAgregado {
-	method calcula(objeto,persona)= objeto.precio(persona) + objeto.precio(persona)* 0.21
-	method recategorizate(comerciante) = comerciante.metodo(minimoNoImponible)
+	method calculaCostoDelObjeto(objeto,persona)= objeto.precio(persona) + objeto.precio(persona)* 0.21
+	method recategorizate(comerciante) = comerciante.metodoDeCobro(minimoNoImponible)
 }
 object minimoNoImponible{
 	var property minimo = 5
-	method calcula(objeto,persona){
+	method calculaCostoDelObjeto(objeto,persona){
 		if (objeto.precio(persona) < self.minimo()){
 			return objeto.precio()
 		}else{

@@ -42,10 +42,8 @@ describe "Test de lucha reformulada" {
 		assert.equals(9, rolando.habilidadDeLucha())
 	}
 
-	test "7) El poder de lucha de la mascara de Rolando cuando es para nada oscura es de 4" {
-		rolando.eliminaUnArtefacto(mascaraOscura)
-		rolando.agregaUnArtefacto(mascaraParaNadaOscura)
-		assert.equals(4, mascaraParaNadaOscura.poderDeLucha(rolando))
+	test "7) El poder de lucha de una mascara oscura cuando no es para nada oscura es de 4" {
+		assert.equals(4, mascaraParaNadaOscura.poderDeLucha())
 	}
 
 	test "8) El poder de lucha de la mascara de Rolando cuando es apra anda oscura con valor minimo 2 es de 2" {

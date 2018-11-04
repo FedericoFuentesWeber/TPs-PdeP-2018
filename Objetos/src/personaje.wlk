@@ -67,6 +67,9 @@ class Personaje {
 	}
 
 	method compra(objeto,comerciante) {
+		if(self.monedas() < comerciante.cobrale(objeto,self)){
+			throw new ExcepcionPorDineroInsuficiente(message = "El personaje no tiene el dinero suficiente para comprar el objeto")
+		}
 		self.monedas(self.monedas() - comerciante.cobrale(objeto,self))
 		objeto.asignate(self)
 	}

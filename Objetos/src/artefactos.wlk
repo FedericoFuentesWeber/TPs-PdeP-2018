@@ -13,7 +13,7 @@ class Artefacto {
 
 	method antiguedadEnDias() = new Date() - self.fechaDeCompra()
 	
-	method asignate(persona) = persona.artefactos().add(self)
+	method asignate(persona) = persona.agregaUnArtefacto(self)
 
 }
 

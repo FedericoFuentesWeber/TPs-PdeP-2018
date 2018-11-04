@@ -10,7 +10,7 @@ describe "test de comercio" {
 	var xenia = new Personaje(hechizoPreferido = alacachulacachicomula)
 	var loqui = new Personaje(monedas = 5, hechizoPreferido = hechizoBasico)
 	var thor = new Personaje(hechizoPreferido = hechizoBasico)
-	const mock = new Comerciante(metodo = new Comicion(valor = 0))
+	const mock = new Comerciante(metodoDeCobro = new Comicion(valor = 0))
 
 	/*
 	 * method compraElLoteDeArtefactos(comprador) {
@@ -45,10 +45,10 @@ describe "test de comercio" {
 
 	test "6) y 7) Xenia compra una espada, un collar de 5 perlas, una armadura sin refuerzo, otra con cota de malla y se queda con 70,5,
 son 4 artefactos en total" {
-		xenia.compra(new Armadura(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
+		xenia.compra(new Armadura(pesoOriginal = 0), mock)
 		xenia.compra(new Armadura(refuerzo = new CotaDeMalla(unidadesDeLucha = 5)), mock)
-		xenia.compra(new ArmaDeFilo(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
-		xenia.compra(new CollarDivino(pesoOriginal = 0, fechaDeCompra = new Date(30, 10, 2018)), mock)
+		xenia.compra(new ArmaDeFilo(pesoOriginal = 0), mock)
+		xenia.compra(new CollarDivino(pesoOriginal = 0), mock)
 		assert.equals(xenia.monedas(), 85.5)
 		assert.equals(xenia.artefactos().size(), 4)
 	}

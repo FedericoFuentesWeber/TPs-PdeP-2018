@@ -3,6 +3,7 @@ import personaje.*
 import hechizo.*
 import mundo.*
 import comerciante.*
+import excepciones.*
 
 describe "Pesos de los artefactos" {
 
@@ -17,7 +18,7 @@ describe "Pesos de los artefactos" {
 	const armaduraSinRefuerzo = new Armadura(pesoOriginal = 12, fechaDeCompra = new Date())
 	const merlin = new Personaje(pesoMaximoCargable = 10, hechizoPreferido = null)
 	const ursula = new Personaje(pesoMaximoCargable = 200, hechizoPreferido = null, artefactos = [ mascaraOscura, armaduraConCotaDeMalla ])
-	const mock = new Comicion(valor = 0)
+	const mock = new Comerciante(metodoDeCobro = new Comicion(valor = 0))
 
 	test "1) El peso total de una espada muy vieja, con un peso inicial de 7 kg, es de 6 kg" {
 		assert.equals(espadaVieja.pesoTotal(), 6)
@@ -65,16 +66,16 @@ describe "Pesos de los artefactos" {
 		assert.equals(armaduraSinRefuerzo.pesoTotal(), 12)
 	}
 
-	/* 
-	 * test "12) El peso que carga Merlin luego de comprar una mascara clara y una oscura, con pesos iniciales de 2 y 3 kg respectivamente, es de 5 kg"{
-	 * 	merlin.compra(mascaraOscura, mock)
-	 * 	merlin.compra(mascaraClara, mock)
-	 * 	assert.equals(merlin.pesoCargado(), 5)
-	 * }
-	 * test "13) Merlin no puede comprar una armadura con un hechizo par, con un peso total de 14 kg, porque el peso maximo que puede cargar es de 10 kg"{
-	 * 	assert.throwsExceptionLike(new ExcepcionPorExcesoDePesoCargado("El artefacto es muy pesado para que lo pueda cargar el personaje"), {merlin.compra(armaduraConHechizoPar, mock)})
-	 * }
-	 */
+	
+	test "12) El peso que carga Merlin luego de comprar una mascara clara y una oscura, con pesos iniciales de 2 y 3 kg respectivamente, es de 5 kg"{
+	  	merlin.compra(mascaraOscura, mock)
+	  	merlin.compra(mascaraClara, mock)
+	  	assert.equals(merlin.pesoCargado(), 5)
+	}
+	test "13) Merlin no puede comprar una armadura con un hechizo par, con un peso total de 14 kg, porque el peso maximo que puede cargar es de 10 kg"{
+	 	assert.throwsExceptionLike(new ExcepcionPorExcesoDePesoCargado("El personaje no puede cargar el artefacto porque excede lo maximo de peso que puede cargar"), {merlin.compra(armaduraConHechizoPar, mock)})
+	}
+	 
 	test"14) Si ursula carga una armadura de 11 kg y una mascara oscura de 3 kg, y se desprede de la armadura, termina cargando con un peso total de 3 kg" {
 		ursula.eliminaUnArtefacto(armaduraConCotaDeMalla)
 		assert.equals(ursula.pesoCargado(), 3)
