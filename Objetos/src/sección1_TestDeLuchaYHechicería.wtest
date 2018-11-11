@@ -1,7 +1,6 @@
 import personaje.*
 import artefactos.*
 import hechizo.*
-import LibroDeHechizos.*
 
 describe "Test de lucha y hechicería" {
 

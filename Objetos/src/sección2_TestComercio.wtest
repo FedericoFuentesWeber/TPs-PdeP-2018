@@ -1,7 +1,6 @@
 import artefactos.*
 import personaje.*
 import hechizo.*
-import LibroDeHechizos.*
 import comerciante.*
 
 describe "test de comercio" {

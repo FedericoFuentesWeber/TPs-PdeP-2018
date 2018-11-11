@@ -1,7 +1,6 @@
 import artefactos.*
 import personaje.*
 import hechizo.*
-import LibroDeHechizos.*
 
 describe "Test de lucha mas avanzada" {
 
